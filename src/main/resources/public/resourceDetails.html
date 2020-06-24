@@ -8,8 +8,8 @@
 <title>CS Resource Finder Home</title>
 
 <!-- Bootstrap -->
-<link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="../css/navbar-static-top.css" rel="stylesheet">
+<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="css/stars.css" rel="stylesheet">
 <!-- <link href="../css/app.css" rel="stylesheet" >
 <link href="../css/fonts/font-awesome.min.css" rel="stylesheet" > -->
 
@@ -115,12 +115,10 @@
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
-						aria-hidden="true"></span>
+						aria-hidden="true"></span>&nbsp;Votes: 20
 				</h3>
 
-				<h3>Number of ratings: 20</h3>
-
-				<h3>Your rating: Not rated.</h3>
+				<h3>Your rating: Not rated</h3>
 
 				<div class="panel panel-primary">
 					<div class="panel-heading">
@@ -128,22 +126,16 @@
 					</div>
 					<div class="panel-body">
 						<p>
-							<span class="label label-danger">2</span><span
-								class="label label-default">kindergarten</span>&nbsp; <span
-								class="label label-danger">3</span><span
-								class="label label-default">algorithms</span>&nbsp; <span
-								class="label label-danger">2</span><span
-								class="label label-default">trees</span>&nbsp; <span
-								class="label label-danger">2</span><span
-								class="label label-default">easy</span>&nbsp; <span
-								class="label label-danger">2</span><span
-								class="label label-default">hard</span>&nbsp; <span
-								class="label label-danger">2</span><span
-								class="label label-default">cool</span>&nbsp; <span
-								class="label label-danger">2</span><span
-								class="label label-default">awesome</span>&nbsp; <span
-								class="label label-danger">6</span><span
-								class="label label-default">understand</span>&nbsp;
+							<span class="badge">2</span><span
+								class="label label-info">kindergarten</span>&nbsp; <span
+								class="badge">3</span><span
+								class="label label-info">algorithms</span>&nbsp; <span
+								class="badge">2</span><span
+								class="label label-info">trees</span>&nbsp; <span
+								class="badge">2</span><span
+								class="label label-info">easy</span>&nbsp; <span
+								class="badge">2</span><span
+								class="label label-info">hard</span>&nbsp;
 						</p>
 
 
@@ -184,25 +176,39 @@
 							</div>
 							<div class="modal-body">
 
-								<!-- Button for choosing rating (1-5) -->
-								<button type="button" class="btn btn-default dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
-									Rating <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-								</ul>
+								<!-- The rating stars (1-5) -->
 
-								<button type="button" class="btn btn-default dropdown-toggle"
-									data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false">
+								<label for="rateStars">*Choose Rating:</label> <br />
+
+								<div class="rate" id="rateStars">
+									<input type="radio" id="star5" name="rate" value="5" /> <label
+										for="star5" title="text">5 stars</label> <input type="radio"
+										id="star4" name="rate" value="4" /> <label for="star4"
+										title="text">4 stars</label> <input type="radio" id="star3"
+										name="rate" value="3" /> <label for="star3" title="text">3
+										stars</label> <input type="radio" id="star2" name="rate" value="2" />
+									<label for="star2" title="text">2 stars</label> <input
+										type="radio" id="star1" name="rate" value="1" /> <label
+										for="star1" title="text">1 star</label>
+								</div>
+
+								<br /> <br /> <br /> <label for="tagSelect">Choose
+									existing tag or enter new tag:</label>
+
+
+								<button type="button" id="tagSelect"
+									class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
 									Tag <span class="caret"></span>
 								</button>
+
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">New
+										Tag</span> <input type="text" class="form-control"
+										placeholder="enter a new tag"
+										aria-describedby="basic-addon1" />
+
+								</div>
 
 								<br /> <br />
 								<div class="input-group">
@@ -230,7 +236,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User1&nbsp;<span class="label label-success">6/18/20</span>
+							User1&nbsp;<span class="label label-info">6/18/20</span>
 						</h2>
 					</div>
 					<div class="panel-body">
@@ -250,7 +256,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-success">6/18/20</span>
+							User2&nbsp;<span class="label label-info">6/18/20</span>
 						</h2>
 					</div>
 					<div class="panel-body">
@@ -280,7 +286,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-success">6/18/20</span>
+							User2&nbsp;<span class="label label-info">6/19/20</span>
 						</h2>
 					</div>
 					<div class="panel-body">
@@ -298,7 +304,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-success">6/18/20</span>
+							User2&nbsp;<span class="label label-info">6/18/20</span>
 						</h2>
 					</div>
 					<div class="panel-body">
@@ -309,7 +315,7 @@
 							3
 						</button>
 						&nbsp; <a href="#" data-toggle="modal"
-							data-target="#viewRepliesModal">View 3 replies</a>
+							data-target="#viewRepliesModal">reply</a>
 					</div>
 				</div>
 
@@ -334,25 +340,28 @@
 								<div class="panel panel-primary">
 									<div class="panel-heading">
 										<h2 class="panel-title">
-											User3&nbsp;<span class="label label-success">6/18/20</span>
+											User3&nbsp;<span class="label label-info">6/20/20</span>&nbsp;<span class="label label-success">Accepted answer&nbsp;<span class="glyphicon glyphicon-ok"
+												aria-hidden="true"></span></span>
 										</h2>
 									</div>
 									<div class="panel-body">
 
-										It takes 10 days <br />
-										<button type="button">
+										It takes 10 days 
+									
+										<br />
+										<button type="button" >
 											<span class="glyphicon glyphicon-thumbs-up"
 												aria-hidden="true"></span> 3
 										</button>
 
 									</div>
 								</div>
-								
-								
+
+
 								<div class="panel panel-primary">
 									<div class="panel-heading">
 										<h2 class="panel-title">
-											User3&nbsp;<span class="label label-success">6/18/20</span>
+											User3&nbsp;<span class="label label-info">6/19/20</span>
 										</h2>
 									</div>
 									<div class="panel-body">
@@ -365,11 +374,11 @@
 
 									</div>
 								</div>
-								
+
 								<div class="panel panel-primary">
 									<div class="panel-heading">
 										<h2 class="panel-title">
-											User6&nbsp;<span class="label label-success">6/18/20</span>
+											User6&nbsp;<span class="label label-info">6/18/20</span>
 										</h2>
 									</div>
 									<div class="panel-body">
@@ -416,8 +425,8 @@
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="../js/jquery/jquery-3.5.1.slim.min.js"></script>
+	<script src="js/jquery/jquery-3.5.1.slim.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="../js/bootstrap/bootstrap.min.js"></script>
+	<script src="js/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
