@@ -41,5 +41,13 @@ public class LoginController {
 		}
 
 	}
+	
+	@PostMapping("/logout")
+	public String logout(@RequestBody UserJson userJson) {
+
+		//TODO: redirect to the login screen
+		return "logout";
+
+	}
 
 }

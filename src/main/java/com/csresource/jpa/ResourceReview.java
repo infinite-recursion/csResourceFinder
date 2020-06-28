@@ -10,26 +10,26 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="\"ResourceReview\"")
+@Table(name="\"resourcereview\"")
 @NamedQuery(name="ResourceReview.findAll", query="SELECT r FROM ResourceReview r")
 public class ResourceReview implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"ID\"")
+	@Column(name="\"id\"")
 	private String id;
 
-	@Column(name="\"Comment\"")
+	@Column(name="\"comment\"")
 	private String comment;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="\"Date\"")
+	@Column(name="\"date\"")
 	private Date date;
 
-	@Column(name="\"Likes\"")
+	@Column(name="\"likes\"")
 	private Integer likes;
 
-	@Column(name="\"Rating\"")
+	@Column(name="\"rating\"")
 	private Integer rating;
 
 	/*
@@ -42,13 +42,13 @@ public class ResourceReview implements Serializable {
 
 	//bi-directional many-to-one association to Resource
 	@ManyToOne
-	@JoinColumn(name="\"ResourceName\"")
+	@JoinColumn(name="\"resourcename\"")
 	private Resource resource;
 
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="\"User\"")
+	@JoinColumn(name="\"user\"")
 	private User user;
 
 	public ResourceReview() {

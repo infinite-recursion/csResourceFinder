@@ -10,41 +10,43 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="\"ResourceReply\"")
+@Table(name="\"resourcereply\"")
 @NamedQuery(name="ResourceReply.findAll", query="SELECT r FROM ResourceReply r")
 public class ResourceReply implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"ID\"")
+	@Column(name="\"id\"")
 	private String id;
 
-	@Column(name="\"Accepted\"")
+	@Column(name="\"accepted\"")
 	private Boolean accepted;
 
-	@Column(name="\"Comment\"")
+	@Column(name="\"comment\"")
 	private String comment;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="\"Date\"")
+	@Column(name="\"date\"")
 	private Date date;
 
-	@Column(name="\"Likes\"")
+	@Column(name="\"likes\"")
 	private Integer likes;
 
 	/*
 	 * @Column(name="\"RepliedToID\"") private String repliedToID;
 	 */
 
-	@Column(name="\"ResourceName\"")
-	private String resourceName;
+	@ManyToOne
+	@JoinColumn(name="\"resourcename\"")
+	private Resource resource;
 
-	@Column(name="\"User\"")
-	private String user;
+	@ManyToOne
+	@JoinColumn(name="\"user\"")
+	private User user;
 
 	//bi-directional many-to-one association to ResourceQuestion
 	@ManyToOne
-	@JoinColumn(name="\"RepliedToID\"")
+	@JoinColumn(name="\"repliedtoid\"")
 	private ResourceQuestion resourceQuestion;
 
 	public ResourceReply() {
@@ -97,19 +99,19 @@ public class ResourceReply implements Serializable {
 	 * repliedToID; }
 	 */
 
-	public String getResourceName() {
-		return this.resourceName;
+	public Resource getResource() {
+		return this.resource;
 	}
 
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
+	public void setResource(Resource resource) {
+		this.resource = resource;
 	}
 
-	public String getUser() {
+	public User getUser() {
 		return this.user;
 	}
 
-	public void setUser(String user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

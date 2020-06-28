@@ -11,23 +11,23 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="\"ResourceQuestion\"")
+@Table(name="\"resourcequestion\"")
 @NamedQuery(name="ResourceQuestion.findAll", query="SELECT r FROM ResourceQuestion r")
 public class ResourceQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"ID\"")
+	@Column(name="\"id\"")
 	private String id;
 
-	@Column(name="\"Comment\"")
+	@Column(name="\"comment\"")
 	private String comment;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="\"Date\"")
+	@Column(name="\"date\"")
 	private Date date;
 
-	@Column(name="\"Likes\"")
+	@Column(name="\"likes\"")
 	private Integer likes;
 
 	/*
@@ -41,12 +41,12 @@ public class ResourceQuestion implements Serializable {
 
 	//bi-directional many-to-one association to Resource
 	@ManyToOne
-	@JoinColumn(name="\"ResourceName\"")
+	@JoinColumn(name="\"resourcename\"")
 	private Resource resource;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="\"User\"")
+	@JoinColumn(name="\"user\"")
 	private User user;
 
 	//bi-directional many-to-one association to ResourceReply

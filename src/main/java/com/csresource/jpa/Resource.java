@@ -10,25 +10,25 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="\"Resource\"")
+@Table(name="\"resource\"")
 @NamedQuery(name="Resource.findAll", query="SELECT r FROM Resource r")
 public class Resource implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"Name\"")
+	@Column(name="\"name\"")
 	private String name;
 
-	@Column(name="\"Description\"")
+	@Column(name="\"description\"")
 	private String description;
 
-	@Column(name="\"NumRatings\"")
+	@Column(name="\"numratings\"")
 	private Integer numRatings;
 
-	@Column(name="\"Rating\"")
-	private Integer rating;
+	@Column(name="\"rating\"")
+	private Float rating;
 
-	@Column(name="\"Url\"")
+	@Column(name="\"url\"")
 	private String url;
 
 	//bi-directional many-to-one association to ResourceQuestion
@@ -70,11 +70,11 @@ public class Resource implements Serializable {
 		this.numRatings = numRatings;
 	}
 
-	public Integer getRating() {
+	public Float getRating() {
 		return this.rating;
 	}
 
-	public void setRating(Integer rating) {
+	public void setRating(Float rating) {
 		this.rating = rating;
 	}
 
