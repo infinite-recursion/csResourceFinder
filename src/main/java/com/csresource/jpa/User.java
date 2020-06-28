@@ -10,16 +10,16 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="\"User\"")
+@Table(name="\"user\"")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"Username\"")
+	@Column(name="\"username\"")
 	private String username;
 
-	@Column(name="\"Password\"")
+	@Column(name="\"password\"")
 	private String password;
 
 	//bi-directional many-to-one association to ResourceQuestion

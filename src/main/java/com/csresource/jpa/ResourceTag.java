@@ -8,27 +8,27 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="\"ResourceTag\"")
+@Table(name="\"resourcetag\"")
 @NamedQuery(name="ResourceTag.findAll", query="SELECT r FROM ResourceTag r")
 public class ResourceTag implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="\"ID\"")
+	@Column(name="\"id\"")
 	private String id;
 
-	@Column(name="\"Count\"")
+	@Column(name="\"count\"")
 	private Integer count;
 
 
 	//bi-directional many-to-one association to Resource
 	@ManyToOne
-	@JoinColumn(name="\"ResourceName\"")
+	@JoinColumn(name="\"resourcename\"")
 	private Resource resource;
 
 	//bi-directional many-to-one association to Tag
 	@ManyToOne
-	@JoinColumn(name="\"TagName\"")
+	@JoinColumn(name="\"tagname\"")
 	private Tag tag;
 
 	public ResourceTag() {
