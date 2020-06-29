@@ -51,6 +51,7 @@ public class ResourceQuestion implements Serializable {
 
 	//bi-directional many-to-one association to ResourceReply
 	@OneToMany(mappedBy="resourceQuestion")
+	@OrderBy("date DESC")
 	private List<ResourceReply> resourceReplies;
 
 	public ResourceQuestion() {

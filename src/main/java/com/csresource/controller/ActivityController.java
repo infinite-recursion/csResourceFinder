@@ -62,11 +62,11 @@ public class ActivityController {
 
 			if (type.equals(AppConstants.REVIEW) || type.equals(AppConstants.RATING)) {
 
-				var resourceVal = resourceReviewRepo.findById(typeID);
+				var resourceReviewVal = resourceReviewRepo.findById(typeID);
 
-				if (resourceVal.isPresent()) {
+				if (resourceReviewVal.isPresent()) {
 
-					ResourceReview resourceReview = resourceVal.get();
+					ResourceReview resourceReview = resourceReviewVal.get();
 					username = resourceReview.getUser().getUsername();
 
 					if (type.equals("review")) {

@@ -33,14 +33,17 @@ public class Resource implements Serializable {
 
 	//bi-directional many-to-one association to ResourceQuestion
 	@OneToMany(mappedBy="resource")
+	@OrderBy("date DESC")
 	private List<ResourceQuestion> resourceQuestions;
 
 	//bi-directional many-to-one association to ResourceReview
 	@OneToMany(mappedBy="resource")
+	@OrderBy("date DESC")
 	private List<ResourceReview> resourceReviews;
 
 	//bi-directional many-to-one association to ResourceTag
 	@OneToMany(mappedBy="resource")
+	@OrderBy("count DESC")
 	private List<ResourceTag> resourceTags;
 
 	public Resource() {
