@@ -30,15 +30,6 @@ public class ResourceQuestion implements Serializable {
 	@Column(name="\"likes\"")
 	private Integer likes;
 
-	/*
-	 * @Column(name="\"ResourceName\"") private String resourceName;
-	 */
-
-	//This is the suername
-	/*
-	 * @Column(name="\"User\"") private String user;
-	 */
-
 	//bi-directional many-to-one association to Resource
 	@ManyToOne
 	@JoinColumn(name="\"resourcename\"")
@@ -88,19 +79,6 @@ public class ResourceQuestion implements Serializable {
 	public void setLikes(Integer likes) {
 		this.likes = likes;
 	}
-
-	/*
-	 * public String getResourceName() { return this.resourceName; }
-	 * 
-	 * public void setResourceName(String resourceName) { this.resourceName =
-	 * resourceName; }
-	 */
-
-	/*
-	 * public String getUser() { return this.user; }
-	 * 
-	 * public void setUser(String user) { this.user = user; }
-	 */
 
 	public Resource getResource() {
 		return this.resource;

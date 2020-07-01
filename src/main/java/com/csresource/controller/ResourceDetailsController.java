@@ -31,6 +31,7 @@ import com.csresource.repositories.TagRepository;
 import com.csresource.repositories.UserRepository;
 import com.resource.json.ResourceJson;
 import com.resource.json.ResourceQuestionJson;
+import com.resource.json.ResourceQuestionSubmissionJson;
 import com.resource.json.ResourceReplyJson;
 import com.resource.json.ResourceReviewJson;
 import com.resource.json.ResourceTagJson;
@@ -119,7 +120,7 @@ public class ResourceDetailsController {
 	}
 
 	@PostMapping("/submitReview")
-	public void submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
+	public String submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
 
 		// Obtain the resource
 		Resource resource = resourceRepo.findById(reviewSubmit.getResource()).get();
@@ -139,8 +140,8 @@ public class ResourceDetailsController {
 		// Handle the tag if there is one
 		if (reviewSubmit.getTag() != null) {
 			Tag tag = null;
-			
-			//convert tag to lowercase
+
+			// convert tag to lowercase
 			reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
 
 			// See if tag already exists. If not, create a new tag
@@ -176,14 +177,15 @@ public class ResourceDetailsController {
 				resourceTagRepo.save(resourceTag);
 			}
 		}
-		
-		//Now need to update the rating for the resource
+
+		// Now need to update the rating for the resource
 		Float currRating = resource.getRating();
-		Float numRatings = (float)(resource.getNumRatings());
-		Float newTotatNumRatings = (float)(numRatings + 1);
-		Float newRating = (currRating * (numRatings/newTotatNumRatings)) + (reviewSubmit.getRating() * (1/newTotatNumRatings));
-		
-		resource.setNumRatings(resource.getNumRatings()+1);
+		Float numRatings = (float) (resource.getNumRatings());
+		Float newTotatNumRatings = (float) (numRatings + 1);
+		Float newRating = (currRating * (numRatings / newTotatNumRatings))
+				+ (reviewSubmit.getRating() * (1 / newTotatNumRatings));
+
+		resource.setNumRatings(resource.getNumRatings() + 1);
 		resource.setRating(newRating);
 		resourceRepo.save(resource);
 
@@ -201,6 +203,34 @@ public class ResourceDetailsController {
 		activity.setTypeID(resourceReview.getId());
 		activity.setDate(resourceReview.getDate());
 		actRepo.save(activity);
+		
+		return resourceReview.getId();
+	}
+
+	@PostMapping("/submitQuestion")
+	public String submitQuestion(@RequestBody ResourceQuestionSubmissionJson questionJson) {
+
+		User user = userRepo.findById(questionJson.getUsername()).get();
+		Resource resource = resourceRepo.findById(questionJson.getResource()).get();
+
+		ResourceQuestion resourceQuestion = new ResourceQuestion();
+		resourceQuestion.setId(Util.convertCurrentDateIntoString());
+		resourceQuestion.setComment(questionJson.getComment());
+		resourceQuestion.setDate(new Date());
+		resourceQuestion.setUser(user);
+		resourceQuestion.setResource(resource);
+		resourceQuestion.setLikes(0);
+		resourceQuestion = resourceQuestionRepo.save(resourceQuestion);
+
+		// Now create the activity
+		Acitivity activity = new Acitivity();
+		activity.setId(Util.convertCurrentDateIntoString());
+		activity.setType(AppConstants.QUESTION);
+		activity.setTypeID(resourceQuestion.getId());
+		activity.setDate(resourceQuestion.getDate());
+		actRepo.save(activity);
+		
+		return resourceQuestion.getId();
 	}
 
 }
