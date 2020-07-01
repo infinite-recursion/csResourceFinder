@@ -13,18 +13,21 @@ public class ResourceReviewJson {
 	private Integer likes;
 
 	private Integer rating;
+	
+	private String username;
 
 	public ResourceReviewJson() {
 
 	}
 
-	public ResourceReviewJson(String id, String comment, Date date, Integer likes, Integer rating) {
+	public ResourceReviewJson(String id, String comment, Date date, Integer likes, Integer rating, String username) {
 
 		this.id = id;
 		this.comment = comment;
 		this.date = date;
 		this.likes = likes;
 		this.rating = rating;
+		this.username = username;
 	}
 
 	public String getId() {
@@ -66,5 +69,15 @@ public class ResourceReviewJson {
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	
 
 }
