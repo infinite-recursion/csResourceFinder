@@ -1,21 +1,28 @@
 package com.csresource.controller;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csresource.jpa.User;
+import com.csresource.jpa.Userlike;
+import com.csresource.repositories.UserLikesRepository;
 import com.csresource.repositories.UserRepository;
 import com.resource.json.UserJson;
 
 @RestController
-public class LoginController {
+public class UserController {
 
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	UserLikesRepository userLikesRepo;
 
 	@PostMapping("/login")
 	public String login(@RequestBody UserJson userJson) {
@@ -48,6 +55,28 @@ public class LoginController {
 		//TODO: redirect to the login screen
 		return "logout";
 
+	}
+	
+	@GetMapping("/getUserLikes")
+	public HashMap<String,String> getUserLikes(@RequestBody String username) {
+
+		//Key is the id of the content that the user liked
+		//value is the id of the Userlike in the database
+		HashMap<String,String> userLikes = new HashMap<String,String>();
+
+		User user = userRepo.findById(username).get();
+		
+		LinkedList<Userlike> likes = userLikesRepo.findByUser(user);
+		
+		if(likes!=null) {
+			
+			for(Userlike userLike : likes) {
+				
+				userLikes.put(userLike.getContentid(), userLike.getId());
+			}
+		}
+		
+		return userLikes;
 	}
 
 }

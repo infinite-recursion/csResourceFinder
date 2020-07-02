@@ -21,13 +21,16 @@ import com.csresource.jpa.ResourceReview;
 import com.csresource.jpa.ResourceTag;
 import com.csresource.jpa.Tag;
 import com.csresource.jpa.User;
+import com.csresource.jpa.Userlike;
 import com.csresource.repositories.ActivityRepository;
+import com.csresource.repositories.LikeContentJson;
 import com.csresource.repositories.ResourceQuestionRepository;
 import com.csresource.repositories.ResourceReplyRepository;
 import com.csresource.repositories.ResourceRepository;
 import com.csresource.repositories.ResourceReviewRepository;
 import com.csresource.repositories.ResourceTagRepository;
 import com.csresource.repositories.TagRepository;
+import com.csresource.repositories.UserLikesRepository;
 import com.csresource.repositories.UserRepository;
 import com.resource.json.AcceptReplyJson;
 import com.resource.json.ReplySubmissionJson;
@@ -66,6 +69,9 @@ public class ResourceDetailsController {
 
 	@Autowired
 	ActivityRepository actRepo;
+	
+	@Autowired
+	UserLikesRepository userLikesRepo;
 
 	@GetMapping("/getDetails")
 	public ResourceJson getResourceDetails(@RequestBody String resourceName) {
@@ -136,7 +142,7 @@ public class ResourceDetailsController {
 		resourceReview.setRating(reviewSubmit.getRating());
 		resourceReview.setResource(resource);
 		resourceReview.setUser(user);
-		resourceReview.setId(Util.convertCurrentDateIntoString());
+		resourceReview.setId(Util.convertCurrentDateIntoString()+"rev");
 		resourceReviewRepo.save(resourceReview);
 
 		// Handle the tag if there is one
@@ -216,7 +222,7 @@ public class ResourceDetailsController {
 		Resource resource = resourceRepo.findById(questionJson.getResource()).get();
 
 		ResourceQuestion resourceQuestion = new ResourceQuestion();
-		resourceQuestion.setId(Util.convertCurrentDateIntoString());
+		resourceQuestion.setId(Util.convertCurrentDateIntoString()+"ques");
 		resourceQuestion.setComment(questionJson.getComment());
 		resourceQuestion.setDate(new Date());
 		resourceQuestion.setUser(user);
@@ -245,7 +251,7 @@ public class ResourceDetailsController {
 		
 		ResourceReply resourceReply = new ResourceReply();
 		
-		resourceReply.setId(Util.convertCurrentDateIntoString());
+		resourceReply.setId(Util.convertCurrentDateIntoString()+"reply");
 		resourceReply.setAccepted(false);
 		resourceReply.setComment(replyJson.getComment());
 		resourceReply.setDate(new Date());
@@ -274,6 +280,97 @@ public class ResourceDetailsController {
 
 		resourceReply = resourceReplyRepo.save(resourceReply);
 
+	}
+	
+	@PostMapping("/likeContent")
+	public String likeContent(@RequestBody LikeContentJson likeContentJson) {
+
+		User user = userRepo.findById(likeContentJson.getUsername()).get();
+
+		String userLikeId = null;
+
+		String contentType = likeContentJson.getContentType();
+		String contentId = likeContentJson.getContentId();
+		boolean liked = likeContentJson.isLiked();
+
+		if (contentType.equals(AppConstants.QUESTION)) {
+
+			ResourceQuestion question = resourceQuestionRepo.findById(contentId).get();
+
+			Integer numLikes = question.getLikes();
+
+			if (liked) {
+				question.setLikes(numLikes + 1);
+
+				// Create a UserLike object
+				Userlike userLike = new Userlike();
+				userLike.setId(Util.convertCurrentDateIntoString());
+				userLike.setContentid(question.getId());
+				userLike.setContenttype(AppConstants.QUESTION);
+				userLike.setUser(user);
+				userLike = userLikesRepo.save(userLike);
+				userLikeId = userLike.getId();
+			} else {
+				question.setLikes(numLikes - 1);
+
+			}
+
+			resourceQuestionRepo.save(question);
+
+		} else if (contentType.equals(AppConstants.REPLY)) {
+
+			ResourceReply reply = resourceReplyRepo.findById(contentId).get();
+
+			Integer numLikes = reply.getLikes();
+
+			if (liked) {
+				reply.setLikes(numLikes + 1);
+
+				Userlike userLike = new Userlike();
+				userLike.setId(Util.convertCurrentDateIntoString());
+				userLike.setContentid(reply.getId());
+				userLike.setContenttype(AppConstants.REPLY);
+				userLike.setUser(user);
+				userLike = userLikesRepo.save(userLike);
+				userLikeId = userLike.getId();
+			} else {
+				reply.setLikes(numLikes - 1);
+			}
+
+			resourceReplyRepo.save(reply);
+
+		} else if (contentType.equals(AppConstants.REVIEW)) {
+
+			ResourceReview review = resourceReviewRepo.findById(contentId).get();
+
+			Integer numLikes = review.getLikes();
+
+			if (liked) {
+				review.setLikes(numLikes + 1);
+
+				Userlike userLike = new Userlike();
+				userLike.setId(Util.convertCurrentDateIntoString());
+				userLike.setContentid(review.getId());
+				userLike.setContenttype(AppConstants.REVIEW);
+				userLike.setUser(user);
+				userLike = userLikesRepo.save(userLike);
+				userLikeId = userLike.getId();
+
+			} else {
+				review.setLikes(numLikes - 1);
+			}
+
+			resourceReviewRepo.save(review);
+
+		}
+
+		// Delete the UserLike
+		if (!liked) {
+
+			userLikesRepo.deleteById(likeContentJson.getUserLikeId());
+		}
+
+		return userLikeId;
 	}
 
 }

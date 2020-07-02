@@ -9,5 +9,6 @@
 		<class>com.csresource.jpa.Tag</class>
 		<class>com.csresource.jpa.User</class>
 		<class>com.csresource.jpa.ResourceTag</class>
+		<class>com.csresource.jpa.Userlike</class>
 	</persistence-unit>
 </persistence>
