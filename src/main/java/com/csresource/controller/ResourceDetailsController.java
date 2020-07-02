@@ -29,6 +29,7 @@ import com.csresource.repositories.ResourceReviewRepository;
 import com.csresource.repositories.ResourceTagRepository;
 import com.csresource.repositories.TagRepository;
 import com.csresource.repositories.UserRepository;
+import com.resource.json.AcceptReplyJson;
 import com.resource.json.ReplySubmissionJson;
 import com.resource.json.ResourceJson;
 import com.resource.json.ResourceQuestionJson;
@@ -263,6 +264,16 @@ public class ResourceDetailsController {
 		actRepo.save(activity);
 		
 		return resourceReply.getId();
+	}
+	
+	@PostMapping("/acceptReply")
+	public void acceptReply(@RequestBody AcceptReplyJson acceptJson) {
+
+		ResourceReply resourceReply = resourceReplyRepo.findById(acceptJson.getReplyId()).get();
+		resourceReply.setAccepted(acceptJson.isAccepted());
+
+		resourceReply = resourceReplyRepo.save(resourceReply);
+
 	}
 
 }
