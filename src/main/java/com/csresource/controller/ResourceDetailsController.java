@@ -29,6 +29,7 @@ import com.csresource.repositories.ResourceReviewRepository;
 import com.csresource.repositories.ResourceTagRepository;
 import com.csresource.repositories.TagRepository;
 import com.csresource.repositories.UserRepository;
+import com.resource.json.ReplySubmissionJson;
 import com.resource.json.ResourceJson;
 import com.resource.json.ResourceQuestionJson;
 import com.resource.json.ResourceQuestionSubmissionJson;
@@ -231,6 +232,37 @@ public class ResourceDetailsController {
 		actRepo.save(activity);
 		
 		return resourceQuestion.getId();
+	}
+	
+	@PostMapping("/submitReply")
+	public String submitReply(@RequestBody ReplySubmissionJson replyJson) {
+
+		User user = userRepo.findById(replyJson.getUsername()).get();
+		Resource resource = resourceRepo.findById(replyJson.getResource()).get();
+
+		ResourceQuestion resourceQuestion = resourceQuestionRepo.findById(replyJson.getQuestionId()).get();
+		
+		ResourceReply resourceReply = new ResourceReply();
+		
+		resourceReply.setId(Util.convertCurrentDateIntoString());
+		resourceReply.setAccepted(false);
+		resourceReply.setComment(replyJson.getComment());
+		resourceReply.setDate(new Date());
+		resourceReply.setLikes(0);
+		resourceReply.setResource(resource);
+		resourceReply.setUser(user);
+		resourceReply.setResourceQuestion(resourceQuestion);
+		resourceReply = resourceReplyRepo.save(resourceReply);
+
+		// Now create the activity
+		Acitivity activity = new Acitivity();
+		activity.setId(Util.convertCurrentDateIntoString());
+		activity.setType(AppConstants.REPLY);
+		activity.setTypeID(resourceReply.getId());
+		activity.setDate(resourceReply.getDate());
+		actRepo.save(activity);
+		
+		return resourceReply.getId();
 	}
 
 }
