@@ -63,9 +63,19 @@ public class SearchController {
 			}
 
 		}
-		// TODO: Searching by keyword alone (automatically search by highest rating
+		// Searching by keyword alone (automatically search by highest rating since no tag specified)
 		else if (searchJson.getKeyword() != null && searchJson.getTag() == null) {
 
+			String keyword = "%" + searchJson.getKeyword() + "%";
+			List<Resource> resources = resourceRepo.findByNameLikeIgnoreCase(keyword, Sort.by("rating").descending());
+
+			for (Resource resource : resources) {
+
+				ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
+						resource.getRating(), resource.getNumRatings());
+				searchResults.add(resultsJson);
+
+			}
 		}
 		// TODO: Searching by tag and keyword
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
