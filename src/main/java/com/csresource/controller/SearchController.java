@@ -1,5 +1,6 @@
 package com.csresource.controller;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,9 +58,29 @@ public class SearchController {
 					}
 				}
 			}
-			// TODO: If searching by tag and highest rating
+			//If searching by tag and highest rating
 			else {
 
+				// Think I need to get all the resource tags that match the tag, and then
+				// sort the resources retrieved from those resource tags by rating
+				List<ResourceTag> resourceTags = resourceTagRepo.findByTag(tag);
+
+				if (resourceTags != null) {
+
+					for (ResourceTag resourceTag : resourceTags) {
+
+						Resource resource = resourceTag.getResource();
+
+						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
+								resource.getRating(), resource.getNumRatings());
+						searchResults.add(resultsJson);
+
+					}
+
+					// Sort them by rating
+					Collections.sort(searchResults);
+
+				}
 			}
 
 		}
@@ -81,7 +102,7 @@ public class SearchController {
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
 
 		}
-		// Just return all results sorted by highest rating
+		// Just return all results sorted by highest rating if no keyword or tag specified
 		else {
 
 			Iterable<Resource> resources = resourceRepo.findAll(Sort.by("rating").descending());

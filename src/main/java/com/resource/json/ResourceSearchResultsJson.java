@@ -1,6 +1,6 @@
 package com.resource.json;
 
-public class ResourceSearchResultsJson {
+public class ResourceSearchResultsJson implements Comparable<ResourceSearchResultsJson>{
 
 	private String resource;
 	private Float rating;
@@ -35,6 +35,17 @@ public class ResourceSearchResultsJson {
 
 	public void setNumberOfRatings(Integer numberOfRatings) {
 		this.numberOfRatings = numberOfRatings;
+	}
+
+	@Override
+	public int compareTo(ResourceSearchResultsJson o) {
+		// TODO Auto-generated method stub
+		if(this.rating > o.rating)
+			return -1;
+		else if(this.rating < o.rating)
+			return 1;
+		else
+			return 0;
 	}
 
 }
