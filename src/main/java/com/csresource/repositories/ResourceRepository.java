@@ -6,4 +6,5 @@ import com.csresource.jpa.Resource;
 
 public interface ResourceRepository extends PagingAndSortingRepository<Resource, String> {
 
+	
 }
