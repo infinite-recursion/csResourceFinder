@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,171 +80,52 @@
 	</nav>
 
 
-	<div class="container">
+	<div class="container" ng-controller="HomeController">
 
 
-		<h2>Home</h2>
+		<h2>Home: Recent Activity</h2>
 
-		<div class="row">
+		<div class="row" ng-repeat="actRow in activities">
 
-			<div class="col-md-3">
+			<div class="col-md-3" ng-repeat="act in actRow">
 
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-
-						<h3 class="panel-title">
-							<a href="#">CS Resource #1</a>&nbsp<span
-								class="glyphicon glyphicon-star" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User1 gave a review of 5/5<br /> <span
-							class="label label-info">6/20/20</span> <br /> <a href="#">View</a>
-					</div>
-
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #2</a>&nbsp<span
-								class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User2 left a review comment:<br />This resource has everything I
-						need<br /> <span class="label label-info">6/19/20</span> <br />
-						<a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #3</a>&nbsp<span
-								class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User3 left a review question:<br />Is this resource good for
-						teaching 1st graders?<br /> <span class="label label-info">6/19/20</span><br />
-						<a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 
 						<h3 class="panel-title">
-							<a href="#">CS Resource #4</a>&nbsp<span
-								class="glyphicon glyphicon-star" aria-hidden="true"></span>
+							<a ng-click="getResourceData(act.resourceName)">{{act.resourceName}}</a>&nbsp
+							<span
+							class="glyphicon glyphicon-star" aria-hidden="true" ng-if="act.type=='rating'"></span>
+							<span
+							class="glyphicon glyphicon-comment" aria-hidden="true" ng-if="act.type=='review'"></span>
+							<span
+							class="glyphicon glyphicon-question-sign" aria-hidden="true" ng-if="act.type=='question'"></span>
+							<span
+							class="glyphicon glyphicon-share" aria-hidden="true" ng-if="act.type=='reply'"></span>
 						</h3>
 					</div>
 					<div class="panel-body">
-						User1 gave a review of 5/5<br /> <span
-							class="label label-info">6/19/20</span> <br /> <a href="#">View</a>
+
+
+						<div ng-if="act.type=='rating'">
+							{{act.username}} gave a rating of {{act.rating}}/5<br /> 
+						</div>
+						<div ng-if="act.type=='review'">
+							{{act.username}} gave a rating of {{act.rating}}/5<br /> 
+							review comment:<br />{{act.review}}<br /> 
+						</div>
+						<div ng-if="act.type=='question'">
+							{{act.username}} left a review question:<br />{{act.question}}<br />
+						</div>
+						<div ng-if="act.type=='reply'">
+							{{act.username}} responded to a review question:<br /> Question: {{act.question}}<br />
+							 Response: {{act.questionReply}}<br />
+						</div>
+						
+						<span class="label label-info">{{act.date}}</span><br />
+							<a ng-click="getResourceData(act.resourceName)">View</a>
 					</div>
 
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #5</a>&nbsp<span
-								class="glyphicon glyphicon-share" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User4 responded to a review question:<br /> Question: "Is this
-						resource good for teaching 1st graders?"<br /> Response: Yes, I
-						have used it for 1st graders, and they love it!<br /> <span
-							class="label label-info">6/18/20</span><br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #6</a>&nbsp<span
-								class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User2 left a review comment:<br />This resource has everything I
-						need<br /> <span class="label label-info">6/18/20</span> <br />
-						<a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #7</a>&nbsp<span
-								class="glyphicon glyphicon-share" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User4 responded to a review question:<br /> Question: "Is this
-						resource good for teaching 1st graders?"<br /> Response: Yes, I
-						have used it for 1st graders, and they love it!<br /> <span
-							class="label label-info">6/17/20</span><br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #8</a>&nbsp<span
-								class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User3 left a review question:<br />Is this resource good for
-						teaching 1st graders?<br /> <span class="label label-info">6/17/20</span><br />
-						<a href="#">View</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #9</a>&nbsp<span
-								class="glyphicon glyphicon-share" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User4 responded to a review question:<br /> Question: "Is this
-						resource good for teaching 1st graders?"<br /> Response: Yes, I
-						have used it for 1st graders, and they love it!<br /> <span
-							class="label label-info">6/16/20</span><br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #10</a>&nbsp;<span
-								class="glyphicon glyphicon-share" aria-hidden="true"></span>
-						</h3>
-					</div>
-					<div class="panel-body">
-						User4 responded to a review question:<br /> Question: "Is this
-						resource good for teaching 1st graders?"<br /> Response: Yes!<br /> <span
-							class="label label-info">6/15/20</span><br /> <a href="#">View</a>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -260,5 +141,8 @@
 	<script src="js/jquery/jquery-3.5.1.slim.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap/bootstrap.min.js"></script>
+	
+	<script src="js/angular/angular.min.js"></script>
+  	<script src="js/home.js"></script>
 </body>
 </html>

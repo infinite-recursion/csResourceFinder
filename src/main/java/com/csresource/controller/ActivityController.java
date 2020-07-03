@@ -39,15 +39,18 @@ public class ActivityController {
 	ResourceReplyRepository resourceReplyRepo;
 
 	@GetMapping("/getActivity")
-	public List<ActivityJson> getActivity() {
+	public List<List<ActivityJson>> getActivity() {
+
+		List<List<ActivityJson>> allActivitiesJson = new LinkedList<List<ActivityJson>>();
 
 		List<ActivityJson> activitiesJson = new LinkedList<ActivityJson>();
 
-		// Retrieve the first 15 elements
-		Pageable sortedByDate = PageRequest.of(0, 15, Sort.by("date").descending());
+		// Retrieve the first 20 elements
+		Pageable sortedByDate = PageRequest.of(0, 20, Sort.by("date").descending());
 
 		Page<Acitivity> activities = actRepo.findAll(sortedByDate);
 
+		int numEntries = 1;
 		for (Acitivity activity : activities) {
 
 			// ActivityJson actJson = new
@@ -116,9 +119,23 @@ public class ActivityController {
 
 			activitiesJson.add(actJson);
 
+			// 4 entries allowed in each list. A list represents a row displayed on the GUI
+			if (numEntries % 4 == 0) {
+				allActivitiesJson.add(activitiesJson);
+
+				activitiesJson = new LinkedList<ActivityJson>();
+			}
+
+			numEntries++;
+
 		}
 
-		return activitiesJson;
+		if (!activitiesJson.isEmpty()) {
+			allActivitiesJson.add(activitiesJson);
+
+		}
+
+		return allActivitiesJson;
 	}
 
 }
