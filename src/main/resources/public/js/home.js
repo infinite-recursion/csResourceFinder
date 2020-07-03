@@ -20,8 +20,6 @@ phonecatApp.controller('HomeController',
 
 			$scope.getResourceData = function(resource) {
 
-				$scope.loginError = false;
-
 				localStorage.setItem("resource", resource);
 				window.location.href = '/resourceDetails.html';
 
