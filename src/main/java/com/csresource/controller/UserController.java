@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.csresource.jpa.User;
 import com.csresource.jpa.Userlike;
@@ -25,8 +26,9 @@ public class UserController {
 	UserLikesRepository userLikesRepo;
 
 	@PostMapping("/login")
-	public String login(@RequestBody UserJson userJson) {
-
+	public boolean login(@RequestBody UserJson userJson) {
+		
+		boolean loginSuccess = false;
 		var userval = userRepo.findById(userJson.getUsername());
 
 		if (userval.isPresent()) {
@@ -35,17 +37,16 @@ public class UserController {
 
 			// TODO: Redirect to Home page
 			if (user.getPassword().equals(userJson.getPassword())) {
-				return "Success";
+				loginSuccess = true;
 			}
 			// TODO: Redirect to Login error page
 			else {
-				return "Error";
+				loginSuccess = false;
 			}
 		}
-		// TODO: Redirect them to login error page
-		else {
-				return "Error";
-		}
+		
+		
+		return loginSuccess;
 
 	}
 	

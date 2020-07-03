@@ -101,6 +101,7 @@ public class SearchController {
 		// TODO: Searching by tag and keyword
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
 
+			//TODO: search by either highest rating or highest frequency
 		}
 		// Just return all results sorted by highest rating if no keyword or tag specified
 		else {

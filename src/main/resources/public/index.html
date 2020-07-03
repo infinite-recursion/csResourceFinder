@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
-	<title>Login V10</title>
+	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -27,7 +27,7 @@
 	<link rel="stylesheet" type="text/css" href="indexresources/css/main.css">
 <!--===============================================================================================-->
 </head>
-<body>
+<body ng-controller="LoginController">
 	
 	<div class="limiter">
 		<div class="container-login100">
@@ -36,16 +36,19 @@
 					<span class="login100-form-title p-b-51">
 						CS RESOURCE FINDER LOGIN
 					</span>
+					
+					<div class="alert alert-danger" role="alert" ng-show="loginError">Incorrect username and/or password</div>
+					
 
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
-						<input class="input100" type="text" name="username" placeholder="Username">
+						<input class="input100" type="text" name="username" placeholder="Username" ng-model="userJson.username">
 						<span class="focus-input100"></span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="pass" placeholder="Password" ng-model="userJson.password">
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -65,7 +68,7 @@
 					</div> -->
 
 					<div class="container-login100-form-btn m-t-17">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" ng-click="login()">
 							Login
 						</button>
 					</div>
@@ -94,6 +97,9 @@
 	<script src="indexresources/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="indexresources/js/main.js"></script>
+	
+	<script src="js/angular/angular.min.js"></script>
+  	<script src="js/index.js"></script>
 
 </body>
 </html>
