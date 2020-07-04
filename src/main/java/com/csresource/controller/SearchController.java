@@ -46,7 +46,7 @@ public class SearchController {
 			Tag tag = tagRepo.findById(searchJson.getTag()).get();
 
 			// If searching by highest tag frequency of the tag selected
-			if (searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_TAG_FREQ)) {
+			if (searchJson.getSearchPriority()!=null && searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_TAG_FREQ)) {
 				List<ResourceTag> resourceTags = resourceTagRepo.findByTag(tag, Sort.by("count").descending());
 
 				if (resourceTags != null) {
