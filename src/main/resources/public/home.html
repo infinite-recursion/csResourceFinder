@@ -18,7 +18,7 @@
     <![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default" ng-controller="SearchController">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -39,32 +39,30 @@
 					<li class="active"><a href="#">Home <span
 							class="glyphicon glyphicon-home" aria-hidden="true"></span><span
 							class="sr-only">(current)</span></a></li>
-					<li><a href="#">Search options:</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">Tags <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">algorithms</a></li>
-							<li><a href="#">game</a></li>
-							<li><a href="#">kindergarten</a></li>
-							<li><a href="#">visual</a></li>
-						</ul></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">Search Priority <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">highest tag frequency</a></li>
-							<li><a href="#">rating</a></li>
-
-						</ul></li>
+					
 				</ul>
 				<form class="navbar-form navbar-left">
+					
+					Search options:
+					<label for="tagSelect">Tag:</label>
+					
+					<select  id="tagSelect" ng-model="selectedTag">
+					    <option ng-repeat="tag in tags" value="{{tag}}">{{tag}}</option>
+  					</select>
+  						
+  						<label for="searchPri">Search Mode:</label>
+					
+					
+					<select  id="searchPri" ng-model="selectedSearchPriority">
+					    <option ng-repeat="pri in searchPriorityOptions" value="{{pri.value}}">{{pri.name}}</option>
+					   
+  						</select>
 					<div class="form-group">
 						<input type="text" class="form-control"
-							placeholder="Search keyword">
+							placeholder="Search keyword" ng-model="searchKeyword">
 					</div>
 					<button type="button" class="btn btn-default"
-						aria-label="Left Align">
+						aria-label="Left Align" ng-click="search()">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
 
@@ -144,5 +142,6 @@
 	
 	<script src="js/angular/angular.min.js"></script>
   	<script src="js/home.js"></script>
+  	
 </body>
 </html>

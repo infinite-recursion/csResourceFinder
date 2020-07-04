@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -83,77 +83,28 @@
 	</nav>
 
 
-	<div class="container">
+	<div class="container" ng-controller="SearchResultsController">
 
 		<!-- Main component for a primary marketing message or call to action -->
 		<h2>Search Results</h2>
-		<div class="row">
+		<div class="row" ng-repeat="resultRow in results">
 
-			<div class="col-md-3">
+			<div class="col-md-3" ng-repeat="result in resultRow">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">
-							<a href="#">CS Resource #1</a>
+							<a ng-click="getResourceData(result.resource)">{{result.resource}}</a>
 						</h3>
 					</div>
 					<div class="panel-body">
-						Rating: 4.5/5<br /> Number of ratings: 20<br /> <a href="#">View</a>
+						Rating: {{result.rating}}/5<br /> Number of ratings: {{result.numberOfRatings}}<br /> <a ng-click="getResourceData(result.resource)">View</a>
 
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #2</a>
-						</h3>
-					</div>
-					<div class="panel-body">
-						Rating: 4/5<br /> Number of ratings: 10<br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #3</a>
-						</h3>
-					</div>
-					<div class="panel-body">
-						Rating: 3/5<br /> Number of ratings: 10<br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #4</a>
-						</h3>
-					</div>
-					<div class="panel-body">
-						Rating: 2.5/5<br /> Number of ratings: 12<br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
+
 		</div>
-		<div class="row">
-
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<a href="#">CS Resource #5</a>
-						</h3>
-					</div>
-					<div class="panel-body">
-						Rating: 2.5/5<br /> Number of ratings: 12<br /> <a href="#">View</a>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 
 	</div>
 	<!-- /container -->
@@ -165,5 +116,8 @@
 	<script src="js/jquery/jquery-3.5.1.slim.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap/bootstrap.min.js"></script>
+	<script src="js/angular/angular.min.js"></script>
+	<script src="js/searchResults.js"></script>
+	
 </body>
 </html>

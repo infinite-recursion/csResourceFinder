@@ -2,7 +2,7 @@
 var app = angular.module('app', []);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-app.controller('ResourceController', function LoginController($scope, $http) {
+app.controller('ResourceController', function ResourceController($scope, $http) {
 
 	var resource = localStorage.getItem("resource");
 	var user = localStorage.getItem("user");

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,8 +33,10 @@ public class SearchController {
 	@Autowired
 	ResourceTagRepository resourceTagRepo;
 
-	@GetMapping("/search")
-	public List<ResourceSearchResultsJson> search(@RequestBody SearchJson searchJson) {
+	@PostMapping("/search")
+	public List<List<ResourceSearchResultsJson>> search(@RequestBody SearchJson searchJson) {
+
+		LinkedList<List<ResourceSearchResultsJson>> allSearchResults = new LinkedList<List<ResourceSearchResultsJson>>();
 
 		LinkedList<ResourceSearchResultsJson> searchResults = new LinkedList<ResourceSearchResultsJson>();
 
@@ -48,6 +51,8 @@ public class SearchController {
 
 				if (resourceTags != null) {
 
+					int numResults = 1;
+
 					for (ResourceTag resourceTag : resourceTags) {
 
 						Resource resource = resourceTag.getResource();
@@ -55,10 +60,22 @@ public class SearchController {
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
 								resource.getRating(), resource.getNumRatings());
 						searchResults.add(resultsJson);
+
+						if (numResults % 4 == 0) {
+							allSearchResults.add(searchResults);
+							searchResults = new LinkedList<ResourceSearchResultsJson>();
+						}
+
+						numResults++;
+					}
+
+					// Add any remaining
+					if (!searchResults.isEmpty()) {
+						allSearchResults.add(searchResults);
 					}
 				}
 			}
-			//If searching by tag and highest rating
+			// If searching by tag and highest rating
 			else {
 
 				// Think I need to get all the resource tags that match the tag, and then
@@ -80,33 +97,72 @@ public class SearchController {
 					// Sort them by rating
 					Collections.sort(searchResults);
 
+					// Now combine them into the list of list
+					int numResults = 1;
+
+					List<ResourceSearchResultsJson> searchResultsJson = new LinkedList<ResourceSearchResultsJson>();
+
+					for (ResourceSearchResultsJson searchResultJson : searchResults) {
+
+						searchResultsJson.add(searchResultJson);
+
+						if (numResults % 4 == 0) {
+							allSearchResults.add(searchResultsJson);
+							searchResultsJson = new LinkedList<ResourceSearchResultsJson>();
+						}
+
+						numResults++;
+					}
+
+					// Add any remaining
+					if (!searchResultsJson.isEmpty()) {
+						allSearchResults.add(searchResultsJson);
+					}
+
 				}
 			}
 
 		}
-		// Searching by keyword alone (automatically search by highest rating since no tag specified)
+		// Searching by keyword alone (automatically search by highest rating since no
+		// tag specified)
 		else if (searchJson.getKeyword() != null && searchJson.getTag() == null) {
 
 			String keyword = "%" + searchJson.getKeyword() + "%";
 			List<Resource> resources = resourceRepo.findByNameLikeIgnoreCase(keyword, Sort.by("rating").descending());
 
+			int numResults = 1;
 			for (Resource resource : resources) {
 
 				ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
 						resource.getRating(), resource.getNumRatings());
 				searchResults.add(resultsJson);
 
+				if (numResults % 4 == 0) {
+					allSearchResults.add(searchResults);
+					searchResults = new LinkedList<ResourceSearchResultsJson>();
+				}
+
+				numResults++;
+
+			}
+
+			// Add any remaining
+			if (!searchResults.isEmpty()) {
+				allSearchResults.add(searchResults);
 			}
 		}
 		// TODO: Searching by tag and keyword
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
 
-			//TODO: search by either highest rating or highest frequency
+			// TODO: search by either highest rating or highest frequency
 		}
-		// Just return all results sorted by highest rating if no keyword or tag specified
+		// Just return all results sorted by highest rating if no keyword or tag
+		// specified
 		else {
 
 			Iterable<Resource> resources = resourceRepo.findAll(Sort.by("rating").descending());
+
+			int numResults = 1;
 
 			for (Resource resource : resources) {
 
@@ -114,10 +170,22 @@ public class SearchController {
 						resource.getRating(), resource.getNumRatings());
 				searchResults.add(resultsJson);
 
+				if (numResults % 4 == 0) {
+					allSearchResults.add(searchResults);
+					searchResults = new LinkedList<ResourceSearchResultsJson>();
+				}
+
+				numResults++;
+
+			}
+
+			// Add any remaining
+			if (!searchResults.isEmpty()) {
+				allSearchResults.add(searchResults);
 			}
 		}
 
-		return searchResults;
+		return allSearchResults;
 
 	}
 
