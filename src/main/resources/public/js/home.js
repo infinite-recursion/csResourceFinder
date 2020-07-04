@@ -1,8 +1,8 @@
 // Define the `phonecatApp` module
-var phonecatApp = angular.module('app', []);
+var app = angular.module('app', []);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('HomeController',
+app.controller('HomeController',
 		function LoginController($scope, $http) {
 
 			// Get the recent activity
@@ -16,6 +16,8 @@ phonecatApp.controller('HomeController',
 			}, function errorCallback(response) {
 				// called asynchronously if an error occurs
 				// or server returns response with an error status.
+				console.log("Error getting activity details");
+
 			});
 
 			$scope.getResourceData = function(resource) {

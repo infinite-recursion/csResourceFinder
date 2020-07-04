@@ -34,6 +34,7 @@ import com.csresource.repositories.UserLikesRepository;
 import com.csresource.repositories.UserRepository;
 import com.resource.json.AcceptReplyJson;
 import com.resource.json.ReplySubmissionJson;
+import com.resource.json.ResourceDetailsRequestJson;
 import com.resource.json.ResourceJson;
 import com.resource.json.ResourceQuestionJson;
 import com.resource.json.ResourceQuestionSubmissionJson;
@@ -73,18 +74,18 @@ public class ResourceDetailsController {
 	@Autowired
 	UserLikesRepository userLikesRepo;
 
-	@GetMapping("/getDetails")
-	public ResourceJson getResourceDetails(@RequestBody String resourceName) {
+	@PostMapping("/getDetails")
+	public ResourceJson getResourceDetails(@RequestBody ResourceDetailsRequestJson resourceRequest) {
 
 		ResourceJson resourceJson = null;
 
-		var resourceVal = resourceRepo.findById(resourceName);
+		var resourceVal = resourceRepo.findById(resourceRequest.getResourceName());
 
 		if (resourceVal.isPresent()) {
 
 			Resource resource = resourceVal.get();
 
-			resourceJson = new ResourceJson(resourceName, resource.getDescription(), resource.getNumRatings(),
+			resourceJson = new ResourceJson(resource.getName(), resource.getDescription(), resource.getNumRatings(),
 					resource.getRating(), resource.getUrl());
 
 			// get the questions and replies
@@ -106,11 +107,21 @@ public class ResourceDetailsController {
 
 			// Get the reviews
 			for (ResourceReview review : resource.getResourceReviews()) {
+				
+				String reviewUser = review.getUser().getUsername();
+				
+				if(reviewUser.equals(resourceRequest.getUsername())) {
+					
+					resourceJson.setUserRating(review.getRating());
+				}
 
-				ResourceReviewJson reviewJson = new ResourceReviewJson(review.getId(), review.getComment(),
-						review.getDate(), review.getLikes(), review.getRating(), review.getUser().getUsername());
+				//Only show reviews that have comments
+				if (review.getComment() != null) {
+					ResourceReviewJson reviewJson = new ResourceReviewJson(review.getId(), review.getComment(),
+							review.getDate(), review.getLikes(), review.getRating(), reviewUser);
 
-				resourceJson.getReviews().add(reviewJson);
+					resourceJson.getReviews().add(reviewJson);
+				}
 
 			}
 

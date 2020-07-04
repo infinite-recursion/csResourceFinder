@@ -19,7 +19,7 @@ phonecatApp.controller('LoginController', function LoginController($scope,
 
 			if (response.data == true) {
 				window.location.href = '/home.html';
-				localStorage.setItem("user", JSON.stringify($scope.userJson));
+				localStorage.setItem("user", $scope.userJson.username);
 			} else {
 				$scope.loginError = true;
 			}

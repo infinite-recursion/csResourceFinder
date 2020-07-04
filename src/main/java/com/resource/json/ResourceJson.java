@@ -12,6 +12,8 @@ public class ResourceJson {
 	private Integer numRatings;
 
 	private Float rating;
+	
+	private Integer userRating;
 
 	private String url;
 
@@ -103,4 +105,13 @@ public class ResourceJson {
 		this.tags = tags;
 	}
 
+	public Integer getUserRating() {
+		return userRating;
+	}
+
+	public void setUserRating(Integer userRating) {
+		this.userRating = userRating;
+	}
+
+	
 }

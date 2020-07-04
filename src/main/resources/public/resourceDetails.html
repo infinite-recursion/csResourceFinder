@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<title>CS Resource Finder Home</title>
+<title>CS Resource Finder Resource Details</title>
 
 <!-- Bootstrap -->
 <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -13,12 +13,7 @@
 <!-- <link href="../css/app.css" rel="stylesheet" >
 <link href="../css/fonts/font-awesome.min.css" rel="stylesheet" > -->
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=1418115com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -39,7 +34,7 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Home <span
+					<li><a href="/home.html">Home <span
 							class="glyphicon glyphicon-home" aria-hidden="true"></span><span
 							class="sr-only">(current)</span></a></li>
 					<li><a href="#">Search options:</a></li>
@@ -86,12 +81,12 @@
 	</nav>
 
 
-	<div class="container">
+	<div class="container" ng-controller="ResourceController">
 
 
 
 		<h2>
-			<a href="#">CS Resource #1</a>
+			<a ng-href="{{resourceData.url}}" target="_blank">{{resourceData.name}}</a>
 		</h2>
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active"><a href="#overview"
@@ -110,15 +105,16 @@
 			<div role="tabpanel" class="tab-pane active" id="overview">
 
 				<h3>
-					Average Rating: <span class="glyphicon glyphicon-star"
+					Average Rating: {{resourceData.rating}}/5
+					<!-- <span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
 						aria-hidden="true"></span><span class="glyphicon glyphicon-star"
-						aria-hidden="true"></span>&nbsp;Votes: 20
+						aria-hidden="true"></span> -->&nbsp;Number of Ratings: {{resourceData.numRatings}}
 				</h3>
 
-				<h3>Your rating: Not rated</h3>
+				<h3 ng-if="resourceData.userRating">Your rating: {{resourceData.userRating}}</h3>
 
 				<div class="panel panel-primary">
 					<div class="panel-heading">
@@ -126,16 +122,11 @@
 					</div>
 					<div class="panel-body">
 						<p>
-							<span class="badge">2</span><span
-								class="label label-info">kindergarten</span>&nbsp; <span
-								class="badge">3</span><span
-								class="label label-info">algorithms</span>&nbsp; <span
-								class="badge">2</span><span
-								class="label label-info">trees</span>&nbsp; <span
-								class="badge">2</span><span
-								class="label label-info">easy</span>&nbsp; <span
-								class="badge">2</span><span
-								class="label label-info">hard</span>&nbsp;
+						
+							<span class="badge" ng-repeat-start="tag in resourceData.tags">{{tag.count}}</span><span
+								class="label label-info" >{{tag.name}}</span><span ng-repeat-end>&nbsp; </span>
+						
+								
 						</p>
 
 
@@ -146,8 +137,7 @@
 					<div class="panel-heading">
 						<h2 class="panel-title">Description</h2>
 					</div>
-					<div class="panel-body">This resource explains everything you
-						need to know about basic CS for 1st graders</div>
+					<div class="panel-body">{{resourceData.description}}</div>
 				</div>
 
 			</div>
@@ -233,48 +223,26 @@
 
 				<br /> <br />
 
-				<div class="panel panel-primary">
+				<!-- The review comments -->
+				<div class="panel panel-primary" ng-repeat="review in resourceData.reviews">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User1&nbsp;<span class="label label-info">6/18/20</span>
+							{{review.username}}&nbsp;<span class="label label-info">{{review.date}}</span>
 						</h2>
 					</div>
 					<div class="panel-body">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span> <br />
-						This resource is excellent! <br />
+						<span class="glyphicon glyphicon-star" aria-hidden="true" ng-if="review.rating>=1"></span><span
+							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating>=2"></span><span
+							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating>=3"></span><span
+							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating>=4"></span><span
+							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating==5"></span> <br />
+						{{review.comment}} <br />
 						<button type="button">
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-							3
+							{{review.likes}}
 						</button>
 					</div>
 				</div>
-
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-info">6/18/20</span>
-						</h2>
-					</div>
-					<div class="panel-body">
-						<span class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span><span
-							class="glyphicon glyphicon-star" aria-hidden="true"></span> <br />
-						This resource is great! <br />
-						<button type="button">
-							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-							3
-						</button>
-					</div>
-				</div>
-
-
-
-
 
 			</div>
 
@@ -283,41 +251,27 @@
 
 				<br />
 
-				<div class="panel panel-primary">
+				<div class="panel panel-primary" ng-repeat="question in resourceData.questions">
 					<div class="panel-heading">
 						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-info">6/19/20</span>
+							{{question.username}}&nbsp;<span class="label label-info">{{question.date}}</span>
 						</h2>
 					</div>
 					<div class="panel-body">
 
-						How long does it take to understand this resource? <br />
+						{{question.comment}} <br />
 						<button type="button">
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-							2
+							{{question.likes}}
 						</button>
 						&nbsp; <a href="#" data-toggle="modal"
-							data-target="#viewRepliesModal">View 3 replies</a>
+							data-target="#viewRepliesModal" ng-if="question.replies.length!=0">View {{question.replies.length}} replies</a>
+							<a href="#" data-toggle="modal"
+							data-target="#viewRepliesModal" ng-if="question.replies.length==0">reply</a>
 					</div>
 				</div>
 
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h2 class="panel-title">
-							User2&nbsp;<span class="label label-info">6/18/20</span>
-						</h2>
-					</div>
-					<div class="panel-body">
-
-						How long does it take to understand this resource? <br />
-						<button type="button">
-							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-							3
-						</button>
-						&nbsp; <a href="#" data-toggle="modal"
-							data-target="#viewRepliesModal">reply</a>
-					</div>
-				</div>
+				
 
 				<!-- View Replies Modal -->
 				<div class="modal fade" id="viewRepliesModal" tabindex="-1"
@@ -428,5 +382,7 @@
 	<script src="js/jquery/jquery-3.5.1.slim.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap/bootstrap.min.js"></script>
+	<script src="js/angular/angular.min.js"></script>
+  	<script src="js/resourceDetails.js"></script>
 </body>
 </html>
