@@ -33,6 +33,7 @@ import com.csresource.repositories.TagRepository;
 import com.csresource.repositories.UserLikesRepository;
 import com.csresource.repositories.UserRepository;
 import com.resource.json.AcceptReplyJson;
+import com.resource.json.LikeContentResponseJson;
 import com.resource.json.ReplySubmissionJson;
 import com.resource.json.ResourceDetailsRequestJson;
 import com.resource.json.ResourceJson;
@@ -294,7 +295,7 @@ public class ResourceDetailsController {
 	}
 	
 	@PostMapping("/likeContent")
-	public String likeContent(@RequestBody LikeContentJson likeContentJson) {
+	public LikeContentResponseJson likeContent(@RequestBody LikeContentJson likeContentJson) {
 
 		User user = userRepo.findById(likeContentJson.getUsername()).get();
 
@@ -380,8 +381,10 @@ public class ResourceDetailsController {
 
 			userLikesRepo.deleteById(likeContentJson.getUserLikeId());
 		}
+		
+		LikeContentResponseJson likeContentResponse = new LikeContentResponseJson(userLikeId);
 
-		return userLikeId;
+		return likeContentResponse;
 	}
 
 }

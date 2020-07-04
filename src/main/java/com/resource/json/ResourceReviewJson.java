@@ -15,9 +15,12 @@ public class ResourceReviewJson {
 	private Integer rating;
 	
 	private String username;
+	
+	private boolean requestInProgress;
 
 	public ResourceReviewJson() {
 
+		requestInProgress = false;
 	}
 
 	public ResourceReviewJson(String id, String comment, Date date, Integer likes, Integer rating, String username) {
@@ -28,6 +31,7 @@ public class ResourceReviewJson {
 		this.likes = likes;
 		this.rating = rating;
 		this.username = username;
+		requestInProgress = false;
 	}
 
 	public String getId() {
@@ -76,6 +80,14 @@ public class ResourceReviewJson {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public boolean isRequestInProgress() {
+		return requestInProgress;
+	}
+
+	public void setRequestInProgress(boolean requestInProgress) {
+		this.requestInProgress = requestInProgress;
 	}
 	
 	

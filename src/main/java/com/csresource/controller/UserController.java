@@ -58,7 +58,7 @@ public class UserController {
 
 	}
 	
-	@GetMapping("/getUserLikes")
+	@PostMapping("/getUserLikes")
 	public HashMap<String,String> getUserLikes(@RequestBody String username) {
 
 		//Key is the id of the content that the user liked

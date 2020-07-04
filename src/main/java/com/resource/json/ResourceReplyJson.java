@@ -15,6 +15,8 @@ public class ResourceReplyJson {
 	private String username;
 	
 	private Integer likes;
+	
+	private boolean requestInProgress;
 
 
 	public ResourceReplyJson(String id, Boolean accepted, String comment, Date date, String username, Integer likes) {
@@ -24,6 +26,7 @@ public class ResourceReplyJson {
 		this.date = date;
 		this.username = username;
 		this.likes = likes;
+		requestInProgress = false;
 	}
 
 	public String getId() {
@@ -72,6 +75,14 @@ public class ResourceReplyJson {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public boolean isRequestInProgress() {
+		return requestInProgress;
+	}
+
+	public void setRequestInProgress(boolean requestInProgress) {
+		this.requestInProgress = requestInProgress;
 	}
 
 

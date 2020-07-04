@@ -147,7 +147,7 @@
 				<br />
 
 				<button type="button" class="btn btn-success btn-lg"
-					data-toggle="modal" data-target="#addReviewModal">
+					data-toggle="modal" data-target="#addReviewModal" ng-if="resourceData.userRating==null">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add Review and Rating
 				</button>
@@ -237,7 +237,7 @@
 							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating>=4"></span><span
 							class="glyphicon glyphicon-star" aria-hidden="true"  ng-if="review.rating==5"></span> <br />
 						{{review.comment}} <br />
-						<button type="button">
+						<button type="button" ng-disabled="!haveUserLikes || review.requestInProgress==true" ng-class="toggleLikeButtonClass(review)" ng-click="likeContent(review,'review')">
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 							{{review.likes}}
 						</button>
@@ -260,7 +260,7 @@
 					<div class="panel-body">
 
 						{{question.comment}} <br />
-						<button type="button">
+						<button type="button" ng-disabled="!haveUserLikes || question.requestInProgress==true" ng-class="toggleLikeButtonClass(question)" ng-click="likeContent(question,'question')">
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 							{{question.likes}}
 						</button>
