@@ -150,6 +150,102 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 		      });
 		    
 	};
+	
+	
+	$scope.openAddQuestionModal = function(){
+		
+		var questionModalInstance = $uibModal.open({
+		      animation: false,
+		      /*ariaLabelledBy: 'modal-title',
+		      ariaDescribedBy: 'modal-body',*/
+		      templateUrl: 'addQuestionModal.html',
+		      controller: 'AddQuestionModalCtrl'
+		    })
+		    
+		    questionModalInstance.result.then(function (question) {
+		       var questionSubmission = {};
+		       questionSubmission.username = user;
+		       questionSubmission.comment = question;
+		       questionSubmission.resource = resource;
+		        
+		        //Submit the review to the backend
+		        console.log(questionSubmission);
+		        
+		        
+				$http({
+					method : 'POST',
+					url : '/resourceDetails/submitQuestion',
+					data : questionSubmission
+				}).then(function successCallback(response) {
+
+					var question = response.data;
+					$scope.resourceData.questions.push(question);
+
+
+				}, function errorCallback(response) {
+					console.log("Error submitting question");
+				});
+		        
+		      }, function () {
+		    	  
+		    	  
+		      });
+		    
+	};
+	
+	
+	$scope.openViewRepliesModal = function(questionData){
+		
+		var replyModalInstance = $uibModal.open({
+		      animation: false,
+		      /*ariaLabelledBy: 'modal-title',
+		      ariaDescribedBy: 'modal-body',*/
+		      templateUrl: 'viewRpliesModal.html',
+		      controller: 'ViewRepliesModalCtrl',
+		      resolve: {
+			        question: function () {
+			          return questionData;
+			        },
+			        userLikes :function () {
+			          return $scope.userLikes;
+			        },
+			        user: function () {
+			          return user;
+			        }
+			      }
+		    })
+		    
+		    replyModalInstance.result.then(function (reply) {
+		       var replySubmission = {};
+		       replySubmission.username = user;
+		       replySubmission.comment = reply;
+		       replySubmission.resource = resource;
+		       replySubmission.questionId = questionData.id;
+		        
+		        //Submit the review to the backend
+		        console.log(replySubmission);
+		        
+		        
+				$http({
+					method : 'POST',
+					url : '/resourceDetails/submitReply',
+					data : replySubmission
+				}).then(function successCallback(response) {
+
+					var replyData = response.data;
+					questionData.replies.push(replyData);
+
+
+				}, function errorCallback(response) {
+					console.log("Error submitting reply");
+				});
+		        
+		      }, function () {
+		    	  
+		    	  
+		      });
+		    
+	};
 
 });
 
@@ -178,6 +274,97 @@ app.controller('AddReviewModalCtrl', function AddReviewModalCtrl($scope, $uibMod
 	  };
 	  
 	  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+	
+
+});
+
+app.controller('AddQuestionModalCtrl', function AddQuestionModalCtrl($scope, $uibModalInstance) {
+	
+	console.log("inside AddQuestionModalCtrl");
+	
+
+	$scope.save = function () {
+		
+	    $uibModalInstance.close($scope.question);
+	  };
+	  
+	  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+	
+
+});
+
+app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $uibModalInstance,$http, question,userLikes,user) {
+	
+	console.log("inside ViewRepliesModalCtrl");
+	
+	$scope.question = question;
+	
+	$scope.userLikes = userLikes;
+	
+	$scope.toggleLikeButtonClass = function(question) {
+		
+		var contentId = question.id;
+
+		if($scope.userLikes[contentId]!=null){
+			question.liked = true;
+			return 'btn btn-primary';
+		}
+		else{
+			question.liked = false;
+			return 'btn btn-default';
+		}
+
+	}
+	
+	$scope.likeReply = function(reply){
+		
+		reply.requestInProgress = true;
+		var likeContent = {};
+		likeContent.contentType = 'reply';
+		likeContent.contentId = reply.id;
+		likeContent.userLikeId = $scope.userLikes[reply.id]; 
+		likeContent.liked = !reply.liked;
+		likeContent.username = user;
+		
+		//Like or unlike a content
+		$http({
+			method : 'POST',
+			url : '/resourceDetails/likeContent',
+			data : likeContent
+		}).then(function successCallback(response) {
+
+			var userLikeId = response.data.userLikeId;
+			
+			//This means the content was liked
+			if(userLikeId!=null){
+				$scope.userLikes[reply.id] = userLikeId;
+				reply.likes++;
+			}
+			//Delete the user like, since that means it
+			//was un-liked
+			else{
+				$scope.userLikes[reply.id] = null;
+				reply.likes--;
+			}
+
+			
+			reply.requestInProgress = false;
+
+		}, function errorCallback(response) {
+			console.log("Error liking reply ");
+		});
+	}
+
+	$scope.submitReply = function () {
+		
+	    $uibModalInstance.close($scope.reply);
+	  };
+	  
+	  $scope.close = function () {
 		    $uibModalInstance.dismiss('cancel');
 		};
 	

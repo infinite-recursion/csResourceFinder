@@ -229,7 +229,7 @@ public class ResourceDetailsController {
 	}
 
 	@PostMapping("/submitQuestion")
-	public String submitQuestion(@RequestBody ResourceQuestionSubmissionJson questionJson) {
+	public ResourceQuestionJson submitQuestion(@RequestBody ResourceQuestionSubmissionJson questionJson) {
 
 		User user = userRepo.findById(questionJson.getUsername()).get();
 		Resource resource = resourceRepo.findById(questionJson.getResource()).get();
@@ -251,28 +251,36 @@ public class ResourceDetailsController {
 		activity.setDate(resourceQuestion.getDate());
 		actRepo.save(activity);
 		
-		return resourceQuestion.getId();
+		ResourceQuestionJson resourceQuestionJson = new ResourceQuestionJson(resourceQuestion.getId(),resourceQuestion.getComment(),resourceQuestion.getDate(),resourceQuestion.getLikes(),questionJson.getUsername());
+		
+		return resourceQuestionJson;
 	}
 	
 	@PostMapping("/submitReply")
-	public String submitReply(@RequestBody ReplySubmissionJson replyJson) {
+	public ResourceReplyJson submitReply(@RequestBody ReplySubmissionJson replySubmissionJson) {
 
-		User user = userRepo.findById(replyJson.getUsername()).get();
-		Resource resource = resourceRepo.findById(replyJson.getResource()).get();
+		User user = userRepo.findById(replySubmissionJson.getUsername()).get();
+		Resource resource = resourceRepo.findById(replySubmissionJson.getResource()).get();
 
-		ResourceQuestion resourceQuestion = resourceQuestionRepo.findById(replyJson.getQuestionId()).get();
+		ResourceQuestion resourceQuestion = resourceQuestionRepo.findById(replySubmissionJson.getQuestionId()).get();
 		
 		ResourceReply resourceReply = new ResourceReply();
 		
 		resourceReply.setId(Util.convertCurrentDateIntoString()+"reply");
 		resourceReply.setAccepted(false);
-		resourceReply.setComment(replyJson.getComment());
+		resourceReply.setComment(replySubmissionJson.getComment());
 		resourceReply.setDate(new Date());
 		resourceReply.setLikes(0);
 		resourceReply.setResource(resource);
 		resourceReply.setUser(user);
 		resourceReply.setResourceQuestion(resourceQuestion);
 		resourceReply = resourceReplyRepo.save(resourceReply);
+		
+		//Add the reply to the question.
+		/*
+		 * resourceQuestion.addResourceReply(resourceReply);
+		 * resourceQuestionRepo.(resourceQuestion);
+		 */
 
 		// Now create the activity
 		Acitivity activity = new Acitivity();
@@ -282,7 +290,11 @@ public class ResourceDetailsController {
 		activity.setDate(resourceReply.getDate());
 		actRepo.save(activity);
 		
-		return resourceReply.getId();
+		ResourceReplyJson replyJson = new ResourceReplyJson(resourceReply.getId(), resourceReply.getAccepted(),
+				resourceReply.getComment(), resourceReply.getDate(), replySubmissionJson.getUsername(),
+				resourceReply.getLikes());
+		
+		return replyJson;
 	}
 	
 	@PostMapping("/acceptReply")
