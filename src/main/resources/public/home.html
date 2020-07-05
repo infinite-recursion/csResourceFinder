@@ -53,7 +53,7 @@
   						<label for="searchPri">Search Mode:</label>
 					
 					
-					<select  id="searchPri" ng-model="selectedSearchPriority">
+					<select  id="searchPri" ng-model="selectedSearchPriority" ng-disabled="selectedTag==null">
 					    <option ng-repeat="pri in searchPriorityOptions" value="{{pri.value}}">{{pri.name}}</option>
 					   
   						</select>
@@ -110,14 +110,14 @@
 						</div>
 						<div ng-if="act.type=='review'">
 							<span class="label label-default">{{act.username}}</span> gave a rating of <span class="label label-default">{{act.rating}}/5</span><br /> 
-							review comment:<br /><span class="label label-default">{{act.review}}</span><br /> 
+							review comment:<br />{{act.review}}<br /> 
 						</div>
 						<div ng-if="act.type=='question'">
-							<span class="label label-default">{{act.username}}</span> left a review question:<br /><span class="label label-default">{{act.question}}</span><br />
+							<span class="label label-default">{{act.username}}</span> left a review question:<br />{{act.question}}<br />
 						</div>
 						<div ng-if="act.type=='reply'">
-							<span class="label label-default">{{act.username}}</span> responded to a review question:<br /> Question: <span class="label label-default">{{act.question}}</span><br />
-							 Response: <span class="label label-default">{{act.questionReply}}</span><br />
+							<span class="label label-default">{{act.username}}</span> responded to a review question:<br /> Question: {{act.question}}<br />
+							 Response: {{act.questionReply}}<br />
 						</div>
 						
 						<span class="label label-info">{{act.date}}</span><br />

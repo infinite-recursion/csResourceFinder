@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -140,7 +139,7 @@ public class ResourceDetailsController {
 	}
 
 	@PostMapping("/submitReview")
-	public String submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
+	public ResourceReviewJson submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
 
 		// Obtain the resource
 		Resource resource = resourceRepo.findById(reviewSubmit.getResource()).get();
@@ -162,7 +161,7 @@ public class ResourceDetailsController {
 			Tag tag = null;
 
 			// convert tag to lowercase
-			reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
+			//reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
 
 			// See if tag already exists. If not, create a new tag
 			var tagExists = tagRepo.findById(reviewSubmit.getTag());
@@ -224,7 +223,9 @@ public class ResourceDetailsController {
 		activity.setDate(resourceReview.getDate());
 		actRepo.save(activity);
 		
-		return resourceReview.getId();
+		ResourceReviewJson resourceReviewJson = new ResourceReviewJson(resourceReview.getId(),resourceReview.getComment(),resourceReview.getDate(),resourceReview.getLikes(),resourceReview.getRating(),reviewSubmit.getUsername());
+		
+		return resourceReviewJson;
 	}
 
 	@PostMapping("/submitQuestion")

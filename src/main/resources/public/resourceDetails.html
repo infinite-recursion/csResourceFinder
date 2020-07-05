@@ -51,7 +51,7 @@
   						<label for="searchPri">Search Mode:</label>
 					
 					
-					<select  id="searchPri" ng-model="selectedSearchPriority">
+					<select  id="searchPri" ng-model="selectedSearchPriority" ng-disabled="selectedTag==null">
 					    <option ng-repeat="pri in searchPriorityOptions" value="{{pri.value}}">{{pri.name}}</option>
 					   
   						</select>
@@ -142,79 +142,11 @@
 				<br />
 
 				<button type="button" class="btn btn-success btn-lg"
-					data-toggle="modal" data-target="#addReviewModal" ng-if="resourceData.userRating==null">
+					ng-click="openAddReviewModal()" ng-disabled="resourceData.userRating!=null || reviewSubmitted">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					Add Review and Rating
 				</button>
 
-				<!-- Add Review Modal -->
-				<div class="modal fade" id="addReviewModal" tabindex="-1"
-					role="dialog" aria-labelledby="myModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<h4 class="modal-title" id="myModalLabel">Review and Rating</h4>
-							</div>
-							<div class="modal-body">
-
-								<!-- The rating stars (1-5) -->
-
-								<label for="rateStars">*Choose Rating:</label> <br />
-
-								<div class="rate" id="rateStars">
-									<input type="radio" id="star5" name="rate" value="5" /> <label
-										for="star5" title="text">5 stars</label> <input type="radio"
-										id="star4" name="rate" value="4" /> <label for="star4"
-										title="text">4 stars</label> <input type="radio" id="star3"
-										name="rate" value="3" /> <label for="star3" title="text">3
-										stars</label> <input type="radio" id="star2" name="rate" value="2" />
-									<label for="star2" title="text">2 stars</label> <input
-										type="radio" id="star1" name="rate" value="1" /> <label
-										for="star1" title="text">1 star</label>
-								</div>
-
-								<br /> <br /> <br /> <label for="tagSelect">Choose
-									existing tag or enter new tag:</label>
-
-
-								<button type="button" id="tagSelect"
-									class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false">
-									Tag <span class="caret"></span>
-								</button>
-
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon1">New
-										Tag</span> <input type="text" class="form-control"
-										placeholder="enter a new tag"
-										aria-describedby="basic-addon1" />
-
-								</div>
-
-								<br /> <br />
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon1">Review</span>
-									<textarea class="form-control"
-										placeholder="enter a review comment"
-										aria-describedby="basic-addon1"></textarea>
-									<!-- <input type="text" class="form-control"
-										placeholder="enter a review comment"
-										aria-describedby="basic-addon1"> -->
-								</div>
-
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save</button>
-							</div>
-						</div>
-					</div>
-				</div>
 
 				<br /> <br />
 
@@ -369,6 +301,59 @@
 
 	</div>
 	<!-- /container -->
+	
+				<!-- Add Review Modal -->
+			<script type="text/ng-template" id="addReviewModal.html">
+							<div class="modal-header">
+								<button type="button" class="close" ng-click="cancel()"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Review and Rating</h4>
+							</div>
+							<div class="modal-body">
+
+								<!-- The rating stars (1-5) -->
+
+								<label for="rateStars">*Choose Rating:</label> 
+
+								<span id="rateStars" uib-rating ng-model="review.rating" max="maxRating" on-hover="hoveringOverRating(value)" on-leave="overStar = null" titles="['one','two','three','four','five']" aria-labelledby="default-rating"></span>
+
+
+								 <br /> <label for="reviewtagSelect">Choose
+									existing tag or enter new tag:</label>
+
+								<select  id="reviewtagSelect" ng-model="existingTag" ng-disabled="newTag!=null && newTag!=''">
+					    			<option ng-repeat="tag in tags" value="{{tag}}">{{tag}}</option>
+  								</select>
+
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">New
+										Tag</span> <input type="text" class="form-control"
+										placeholder="enter a new tag"
+										aria-describedby="basic-addon1" ng-model="newTag" maxlength="20" ng-disabled="existingTag!=null" />
+
+								</div>
+
+								<br /> <br />
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">Review</span>
+									<textarea class="form-control"
+										placeholder="enter a review comment"
+										aria-describedby="basic-addon1" maxlength="1000" ng-model="review.comment"></textarea>
+									
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-warning"
+									ng-click="cancel()">Cancel</button>
+								<button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="review.rating==null">Save</button>
+							</div>
+			</script>
+			<!-- End Add Review Modal -->
+			
+
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->
@@ -378,6 +363,9 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap/bootstrap.min.js"></script>
 	<script src="js/angular/angular.min.js"></script>
+	<script src="js/angular/angular-animate.js"></script>
+	<script src="js/ui-bootstrap/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	
   	<script src="js/resourceDetails.js"></script>
 </body>
 </html>

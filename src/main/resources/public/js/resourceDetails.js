@@ -1,8 +1,8 @@
 // Define the `phonecatApp` module
-var app = angular.module('app', []);
+var app = angular.module('app', ['ngAnimate','ui.bootstrap']);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-app.controller('ResourceController', function ResourceController($scope, $http) {
+app.controller('ResourceController', function ResourceController($scope,$rootScope, $http,$uibModal) {
 
 	var resource = localStorage.getItem("resource");
 	var user = localStorage.getItem("user");
@@ -10,6 +10,8 @@ app.controller('ResourceController', function ResourceController($scope, $http) 
 	var resourceRequest = {};
 	resourceRequest.resourceName = resource;
 	resourceRequest.username = user;
+	
+	$scope.reviewSubmitted = false;
 
 	// Get the resource details
 	$http({
@@ -96,12 +98,95 @@ app.controller('ResourceController', function ResourceController($scope, $http) 
 			console.log("Error liking content type: " + contentType);
 		});
 	}
+	
+	$scope.openAddReviewModal = function(){
+		
+		var reviewModalInstance = $uibModal.open({
+		      animation: false,
+		      /*ariaLabelledBy: 'modal-title',
+		      ariaDescribedBy: 'modal-body',*/
+		      templateUrl: 'addReviewModal.html',
+		      controller: 'AddReviewModalCtrl',
+		      resolve: {
+		        tags: function () {
+		          return $rootScope.tags;
+		        }
+		      }
+		    })
+		    
+		    reviewModalInstance.result.then(function (reviewContent) {
+		       var reviewSubmission = reviewContent;
+		       reviewSubmission.username = user;
+		       reviewSubmission.resource = resource;
+		        
+		        //Submit the review to the backend
+		        console.log(reviewSubmission);
+		        
+		        $scope.reviewSubmitted = true;
+		        
+				$http({
+					method : 'POST',
+					url : '/resourceDetails/submitReview',
+					data : reviewSubmission
+				}).then(function successCallback(response) {
+
+					var review = response.data;
+					$scope.resourceData.reviews.push(review);
+	
+					//disable the Add Review button
+					$scope.resourceData.userRating = review.rating;
+
+				}, function errorCallback(response) {
+					console.log("Error submitting review");
+				});
+		        
+		      }, function () {
+		    	  
+		    	  //Enter into here when user clicks
+		    	  //cancel on modal
+		    	  
+		    	  
+		        //$log.info('modal-component dismissed at: ' + new Date());
+		      });
+		    
+	};
+
+});
+
+app.controller('AddReviewModalCtrl', function AddReviewModalCtrl($scope, $uibModalInstance,tags) {
+	
+	console.log("inside AddReviewModalCtrl");
+	
+	$scope.tags = tags;
+	
+	$scope.review = {}; 
+	$scope.maxRating = 5;
+	
+	$scope.hoveringOverRating = function(value) {
+	    $scope.overStar = value;
+	    $scope.percent = 100 * (value / $scope.max);
+	  };
+	
+	$scope.save = function () {
+		if($scope.existingTag!=null){
+			$scope.review.tag = $scope.existingTag;
+		}
+		else if($scope.newTag!=null&&$scope.newTag!=''){
+			$scope.review.tag = $scope.newTag;
+		}
+	    $uibModalInstance.close($scope.review);
+	  };
+	  
+	  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+	
 
 });
 
 
 //Handles the logic for searching for results
-app.controller('SearchController', function SearchController($scope, $http) {
+app.controller('SearchController', function SearchController($scope, $http, $rootScope) {
 
 
 	$scope.searchPriorityOptions = [];
@@ -115,7 +200,7 @@ app.controller('SearchController', function SearchController($scope, $http) {
 	highestTag.name = 'highest tag frequency';
 	$scope.searchPriorityOptions.push(highestTag);
 	
-	$scope.selectedSearchPriority = highestRating;
+	$scope.selectedSearchPriority = highestRating.value;
 	// Get the tags for the search
 	$http({
 		method : 'GET',
@@ -123,6 +208,7 @@ app.controller('SearchController', function SearchController($scope, $http) {
 	}).then(function successCallback(response) {
 
 		$scope.tags = response.data;
+		$rootScope.tags = response.data;
 
 	}, function errorCallback(response) {
 		console.log("Error getting tags for search");

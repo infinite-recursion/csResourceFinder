@@ -53,7 +53,7 @@
   						<label for="searchPri">Search Mode:</label>
 					
 					
-					<select  id="searchPri" ng-model="selectedSearchPriority">
+					<select  id="searchPri" ng-model="selectedSearchPriority" ng-disabled="selectedTag==null">
 					    <option ng-repeat="pri in searchPriorityOptions" value="{{pri.value}}">{{pri.name}}</option>
 					   
   						</select>

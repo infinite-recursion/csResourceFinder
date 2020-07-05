@@ -44,7 +44,7 @@ app.controller('SearchController', function SearchController($scope, $http) {
 	highestTag.name = 'highest tag frequency';
 	$scope.searchPriorityOptions.push(highestTag);
 	
-	$scope.selectedSearchPriority = highestRating;
+	$scope.selectedSearchPriority = highestRating.value;
 	// Get the tags for the search
 	$http({
 		method : 'GET',
