@@ -456,16 +456,12 @@ app.controller('SearchController', function SearchController($scope, $http, $roo
 	};
 	
 	$scope.search = function(){
-		
-		
-		
+
 		var searchJson = {};
 		searchJson.keyword = $scope.searchKeyword;
 		searchJson.tag = $scope.selectedTag;
+		searchJson.searchPriority = $scope.selectedSearchPriority;
 		
-		if($scope.selectedSearchPriority!=null){
-			searchJson.searchPriority = $scope.selectedSearchPriority.value;
-		}
 		
 		if($scope.selectedTag==null && searchJson.searchPriority=='highest tag'){
 			searchJson.searchPriority = null

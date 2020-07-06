@@ -72,8 +72,6 @@ app.controller('SearchResultsController',
 			
 			$scope.search = function(){
 				
-				$scope.results.length = 0;
-				
 				var searchJson = {};
 				searchJson.keyword = $scope.searchKeyword;
 				searchJson.tag = $scope.selectedTag;
@@ -92,13 +90,7 @@ app.controller('SearchResultsController',
 				}).then(function successCallback(response) {
 
 					var searchResults = response.data;
-					//Refresh the search results
-					/*for(var i = 0; i < searchResults.length; i++){
-						
-						$scope.results.push(searchResults[i]);
-					}*/
 					
-					//$rootScope.$apply();
 					
 					localStorage.setItem("searchResults", JSON.stringify(searchResults));
 					
