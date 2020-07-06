@@ -35,6 +35,10 @@ public class SearchController {
 
 	@PostMapping("/search")
 	public List<List<ResourceSearchResultsJson>> search(@RequestBody SearchJson searchJson) {
+		
+		if(searchJson.getTag()!=null && searchJson.getTag().equals("")){
+			searchJson.setTag(null);
+		}
 
 		LinkedList<List<ResourceSearchResultsJson>> allSearchResults = new LinkedList<List<ResourceSearchResultsJson>>();
 

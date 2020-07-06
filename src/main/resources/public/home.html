@@ -46,14 +46,14 @@
 					Search options:
 					<label for="tagSelect">Tag:</label>
 					
-					<select  id="tagSelect" ng-model="selectedTag">
+					<select  id="tagSelect" ng-model="selectedTag" ng-change="checkSearchMode()">
 					    <option ng-repeat="tag in tags" value="{{tag}}">{{tag}}</option>
   					</select>
   						
   						<label for="searchPri">Search Mode:</label>
 					
-					
-					<select  id="searchPri" ng-model="selectedSearchPriority" ng-disabled="selectedTag==null">
+					<!-- Disable the search mode if no tag selected -->
+					<select  id="searchPri" ng-model="selectedSearchPriority" ng-disabled="selectedTag==null || selectedTag==''">
 					    <option ng-repeat="pri in searchPriorityOptions" value="{{pri.value}}">{{pri.name}}</option>
 					   
   						</select>

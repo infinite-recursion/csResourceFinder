@@ -455,6 +455,13 @@ app.controller('SearchController', function SearchController($scope, $http, $roo
 
 	};
 	
+	$scope.checkSearchMode = function(){
+		
+		if($scope.selectedTag==null || $scope.selectedTag==''){
+			$scope.selectedSearchPriority = highestRating.value;
+		}
+	};
+	
 	$scope.search = function(){
 
 		var searchJson = {};

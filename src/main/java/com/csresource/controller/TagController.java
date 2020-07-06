@@ -25,6 +25,8 @@ public class TagController {
 
 		Iterable<Tag> tagsJpaList = tagRepo.findAll(Sort.by("name").ascending());
 
+		//Add a blank option for a tag
+		tags.add("");
 		for (Tag tag : tagsJpaList) {
 			tags.add(tag.getName());
 		}
