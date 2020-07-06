@@ -318,9 +318,14 @@
 										{{reply.comment}}
 									
 										<br />
-										<button type="button" ng-click="likeReply(reply)" ng-disabled="reply.requestInProgress==true" ng-class="toggleLikeButtonClass(reply)">
+										<button type="button" ng-click="likeReply(reply)" ng-disabled="!haveUserLikes || reply.requestInProgress==true" ng-class="toggleLikeButtonClass(reply)">
 											<span class="glyphicon glyphicon-thumbs-up"
 												aria-hidden="true"></span> {{reply.likes}}
+										</button>
+										&nbsp;
+										<button type="button" title="{{!reply.accepted ? 'accept answer' : 'un-accept answer'}}" ng-click="toggleAcceptance(reply)" ng-if="question.username==user" ng-disabled="reply.requestInProgress==true" ng-class="toggleAcceptButtonClass(reply)">
+											<span class="glyphicon glyphicon-ok"
+												aria-hidden="true"></span>
 										</button>
 
 									</div>

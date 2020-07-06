@@ -26,7 +26,7 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 		console.log("Error getting resource details");
 	});
 	
-	$scope.haveUserLikes = false;
+	$rootScope.haveUserLikes = false;
 	
 	//Get the user's likes
 	$http({
@@ -37,7 +37,7 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 
 		$scope.userLikes = response.data;
 		
-		$scope.haveUserLikes = true;
+		$rootScope.haveUserLikes = true;
 
 	}, function errorCallback(response) {
 		console.log("Error getting user likes");
@@ -297,13 +297,17 @@ app.controller('AddQuestionModalCtrl', function AddQuestionModalCtrl($scope, $ui
 
 });
 
-app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $uibModalInstance,$http, question,userLikes,user) {
+app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $rootScope,$uibModalInstance,$http, question,userLikes,user) {
 	
 	console.log("inside ViewRepliesModalCtrl");
+	
+	$scope.haveUserLikes = $rootScope.haveUserLikes;
 	
 	$scope.question = question;
 	
 	$scope.userLikes = userLikes;
+	
+	$scope.user = user;
 	
 	$scope.toggleLikeButtonClass = function(question) {
 		
@@ -358,6 +362,44 @@ app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $ui
 			console.log("Error liking reply ");
 		});
 	}
+	
+	$scope.toggleAcceptance = function(reply){
+		
+		reply.acceptRequestInProgress = true;
+		var acceptReplyRequest = {};
+		acceptReplyRequest.replyId = reply.id;
+		acceptReplyRequest.accepted = !reply.accepted;
+		
+		//Like or unlike a content
+		$http({
+			method : 'POST',
+			url : '/resourceDetails/acceptReply',
+			data : acceptReplyRequest
+		}).then(function successCallback(response) {
+
+			//Toggle the accepted field
+			reply.accepted = !reply.accepted;
+
+			
+			reply.acceptRequestInProgress = false;
+
+		}, function errorCallback(response) {
+			console.log("Error toggling reply acceptance ");
+		});
+	};
+	
+	$scope.toggleAcceptButtonClass = function(reply) {
+		
+		if(reply.accepted){
+			
+			return 'btn btn-danger';
+		}
+		else{
+			
+			return 'btn btn-success';
+		}
+
+	};
 
 	$scope.submitReply = function () {
 		
