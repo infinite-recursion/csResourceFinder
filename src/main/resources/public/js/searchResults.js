@@ -5,6 +5,10 @@ var app = angular.module('app', []);
 app.controller('SearchResultsController',
 		function SearchResultsController($scope, $http, $rootScope) {
 
+		// Return user to the login screen
+		if (localStorage.getItem("user") == null) {
+			window.location.href = '/index.html';
+		}
 	
 			//Get the search results if searched
 			//on a different page
@@ -57,6 +61,14 @@ app.controller('SearchResultsController',
 			}, function errorCallback(response) {
 				console.log("Error getting tags for search");
 			});
+			
+			$scope.logout = function(){
+				
+				localStorage.removeItem("user");
+				window.location.href = '/index.html';
+				
+
+			};
 			
 			$scope.search = function(){
 				

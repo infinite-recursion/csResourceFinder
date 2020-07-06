@@ -6,6 +6,10 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 
 	var resource = localStorage.getItem("resource");
 	var user = localStorage.getItem("user");
+	
+	if(user==null){
+		window.location.href="/index.html";
+	}
 
 	var resourceRequest = {};
 	resourceRequest.resourceName = resource;
@@ -442,6 +446,14 @@ app.controller('SearchController', function SearchController($scope, $http, $roo
 	}, function errorCallback(response) {
 		console.log("Error getting tags for search");
 	});
+	
+	$scope.logout = function(){
+		
+		localStorage.removeItem("user");
+		window.location.href = '/index.html';
+		
+
+	};
 	
 	$scope.search = function(){
 		

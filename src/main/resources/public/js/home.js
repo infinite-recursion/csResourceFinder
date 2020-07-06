@@ -4,6 +4,11 @@ var app = angular.module('app', []);
 // Define the `PhoneListController` controller on the `phonecatApp` module
 app.controller('HomeController',
 		function HomeController($scope, $http) {
+	
+			//Return user to the login screen
+			if(localStorage.getItem("user")==null){
+				window.location.href = '/index.html';
+			}
 
 			// Get the recent activity
 			$http({
@@ -25,7 +30,8 @@ app.controller('HomeController',
 				localStorage.setItem("resource", resource);
 				window.location.href = '/resourceDetails.html';
 
-			}
+			};
+
 
 		});
 
@@ -56,6 +62,15 @@ app.controller('SearchController', function SearchController($scope, $http) {
 	}, function errorCallback(response) {
 		console.log("Error getting tags for search");
 	});
+	
+	
+	$scope.logout = function(){
+		
+		localStorage.removeItem("user");
+		window.location.href = '/index.html';
+		
+
+	};
 	
 	$scope.search = function(){
 		
