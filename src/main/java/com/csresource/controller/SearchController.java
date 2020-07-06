@@ -59,6 +59,9 @@ public class SearchController {
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
 								resource.getRating(), resource.getNumRatings());
+						resultsJson.setTag(tag.getName());
+						resultsJson.setTagCount(resourceTag.getCount());
+						
 						searchResults.add(resultsJson);
 
 						if (numResults % 4 == 0) {
@@ -90,6 +93,10 @@ public class SearchController {
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
 								resource.getRating(), resource.getNumRatings());
+						
+						resultsJson.setTag(tag.getName());
+						resultsJson.setTagCount(resourceTag.getCount());
+						
 						searchResults.add(resultsJson);
 
 					}

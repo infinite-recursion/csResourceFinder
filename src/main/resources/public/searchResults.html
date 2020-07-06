@@ -92,7 +92,13 @@
 						</h3>
 					</div>
 					<div class="panel-body">
-						Rating: {{result.rating}}/5<br /> Number of ratings: {{result.numberOfRatings}}<br /> <a ng-click="getResourceData(result.resource)">View</a>
+						Rating: {{result.rating}}/5<br /> 
+						Number of ratings: {{result.numberOfRatings}}<br /> 
+						
+						<div ng-if="result.tag!=null">Tag: <span class="badge">{{result.tagCount}}</span><span
+								class="label label-info" >{{result.tag}}</span><br /></div>
+						
+						<a ng-click="getResourceData(result.resource)">View</a>
 
 					</div>
 				</div>
