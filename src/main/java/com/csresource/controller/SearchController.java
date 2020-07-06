@@ -35,8 +35,8 @@ public class SearchController {
 
 	@PostMapping("/search")
 	public List<List<ResourceSearchResultsJson>> search(@RequestBody SearchJson searchJson) {
-		
-		if(searchJson.getTag()!=null && searchJson.getTag().equals("")){
+
+		if (searchJson.getTag() != null && searchJson.getTag().equals("")) {
 			searchJson.setTag(null);
 		}
 
@@ -50,7 +50,8 @@ public class SearchController {
 			Tag tag = tagRepo.findById(searchJson.getTag()).get();
 
 			// If searching by highest tag frequency of the tag selected
-			if (searchJson.getSearchPriority()!=null && searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_TAG_FREQ)) {
+			if (searchJson.getSearchPriority() != null
+					&& searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_TAG_FREQ)) {
 				List<ResourceTag> resourceTags = resourceTagRepo.findByTag(tag, Sort.by("count").descending());
 
 				if (resourceTags != null) {
@@ -65,7 +66,7 @@ public class SearchController {
 								resource.getRating(), resource.getNumRatings());
 						resultsJson.setTag(tag.getName());
 						resultsJson.setTagCount(resourceTag.getCount());
-						
+
 						searchResults.add(resultsJson);
 
 						if (numResults % 4 == 0) {
@@ -97,10 +98,10 @@ public class SearchController {
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
 								resource.getRating(), resource.getNumRatings());
-						
+
 						resultsJson.setTag(tag.getName());
 						resultsJson.setTagCount(resourceTag.getCount());
-						
+
 						searchResults.add(resultsJson);
 
 					}
@@ -166,6 +167,109 @@ public class SearchController {
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
 
 			// TODO: search by either highest rating or highest frequency
+
+			// Searching by highest rating
+			if (searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_RATING)) {
+
+				String keyword = searchJson.getKeyword().toLowerCase();
+
+				Tag tag = tagRepo.findById(searchJson.getTag()).get();
+
+				// First search by tag
+				List<ResourceTag> resourceTags = resourceTagRepo.findByTag(tag);
+
+				// Then filter out based on the keyword: will only include results that contain
+				// keyword
+				for (ResourceTag resourceTag : resourceTags) {
+
+					Resource resource = resourceTag.getResource();
+
+					String resourceNameLowerCase = resource.getName().toLowerCase();
+
+					if (resourceNameLowerCase.contains(keyword)) {
+
+						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
+								resource.getRating(), resource.getNumRatings());
+
+						resultsJson.setTag(tag.getName());
+						resultsJson.setTagCount(resourceTag.getCount());
+						searchResults.add(resultsJson);
+					}
+
+				}
+
+				// Now sort by rating
+				Collections.sort(searchResults);
+
+				// Now combine them into the list of list
+				int numResults = 1;
+
+				List<ResourceSearchResultsJson> searchResultsJson = new LinkedList<ResourceSearchResultsJson>();
+
+				for (ResourceSearchResultsJson searchResultJson : searchResults) {
+
+					searchResultsJson.add(searchResultJson);
+
+					if (numResults % 4 == 0) {
+						allSearchResults.add(searchResultsJson);
+						searchResultsJson = new LinkedList<ResourceSearchResultsJson>();
+					}
+
+					numResults++;
+				}
+
+				// Add any remaining
+				if (!searchResultsJson.isEmpty()) {
+					allSearchResults.add(searchResultsJson);
+				}
+
+			}
+			// Search by highest tag
+			else if (searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_TAG_FREQ)) {
+
+				Tag tag = tagRepo.findById(searchJson.getTag()).get();
+
+				String keyword = searchJson.getKeyword().toLowerCase();
+
+				// Retrieve by highest tag
+				List<ResourceTag> resourceTags = resourceTagRepo.findByTag(tag, Sort.by("count").descending());
+
+				if (resourceTags != null) {
+
+					int numResults = 1;
+
+					for (ResourceTag resourceTag : resourceTags) {
+
+						// Only include the result if it contains the keyword
+
+						Resource resource = resourceTag.getResource();
+
+						String resourceNameLowerCase = resource.getName().toLowerCase();
+
+						if (resourceNameLowerCase.contains(keyword)) {
+
+							ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
+									resource.getRating(), resource.getNumRatings());
+							resultsJson.setTag(tag.getName());
+							resultsJson.setTagCount(resourceTag.getCount());
+
+							searchResults.add(resultsJson);
+
+							if (numResults % 4 == 0) {
+								allSearchResults.add(searchResults);
+								searchResults = new LinkedList<ResourceSearchResultsJson>();
+							}
+
+							numResults++;
+						}
+					}
+
+					// Add any remaining
+					if (!searchResults.isEmpty()) {
+						allSearchResults.add(searchResults);
+					}
+				}
+			}
 		}
 		// Just return all results sorted by highest rating if no keyword or tag
 		// specified

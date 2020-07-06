@@ -135,8 +135,10 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 				}).then(function successCallback(response) {
 
 					var review = response.data;
-					$scope.resourceData.reviews.push(review);
-	
+					
+					if(review.comment!=null){
+						$scope.resourceData.reviews.push(review);
+					}
 					//disable the Add Review button
 					$scope.resourceData.userRating = review.rating;
 
@@ -268,7 +270,7 @@ app.controller('AddReviewModalCtrl', function AddReviewModalCtrl($scope, $uibMod
 	  };
 	
 	$scope.save = function () {
-		if($scope.existingTag!=null){
+		if($scope.existingTag!=null&&$scope.existingTag!=''){
 			$scope.review.tag = $scope.existingTag;
 		}
 		else if($scope.newTag!=null&&$scope.newTag!=''){
