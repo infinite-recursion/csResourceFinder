@@ -2,6 +2,7 @@ package com.csresource.controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class UserController {
 	public boolean login(@RequestBody UserJson userJson) {
 		
 		boolean loginSuccess = false;
-		var userval = userRepo.findById(userJson.getUsername());
+		Optional<User> userval = userRepo.findById(userJson.getUsername());
 
 		if (userval.isPresent()) {
 

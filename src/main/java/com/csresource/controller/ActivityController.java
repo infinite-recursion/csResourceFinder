@@ -2,6 +2,7 @@ package com.csresource.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,7 +66,7 @@ public class ActivityController {
 
 			if (type.equals(AppConstants.REVIEW) || type.equals(AppConstants.RATING)) {
 
-				var resourceReviewVal = resourceReviewRepo.findById(typeID);
+				Optional<ResourceReview> resourceReviewVal = resourceReviewRepo.findById(typeID);
 
 				if (resourceReviewVal.isPresent()) {
 
@@ -82,7 +83,7 @@ public class ActivityController {
 
 			} else if (type.equals(AppConstants.QUESTION)) {
 
-				var resourceQuesVal = resourceQuestionRepo.findById(typeID);
+				Optional<ResourceQuestion> resourceQuesVal = resourceQuestionRepo.findById(typeID);
 
 				if (resourceQuesVal.isPresent()) {
 
@@ -95,7 +96,7 @@ public class ActivityController {
 
 			} else if (type.equals(AppConstants.REPLY)) {
 
-				var resourceReplyVal = resourceReplyRepo.findById(typeID);
+				Optional<ResourceReply> resourceReplyVal = resourceReplyRepo.findById(typeID);
 
 				if (resourceReplyVal.isPresent()) {
 

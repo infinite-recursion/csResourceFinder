@@ -3,6 +3,7 @@ package com.csresource.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,7 +80,7 @@ public class ResourceDetailsController {
 
 		ResourceJson resourceJson = null;
 
-		var resourceVal = resourceRepo.findById(resourceRequest.getResourceName());
+		Optional<Resource> resourceVal = resourceRepo.findById(resourceRequest.getResourceName());
 
 		if (resourceVal.isPresent()) {
 
@@ -164,7 +165,7 @@ public class ResourceDetailsController {
 			//reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
 
 			// See if tag already exists. If not, create a new tag
-			var tagExists = tagRepo.findById(reviewSubmit.getTag());
+			Optional<Tag> tagExists = tagRepo.findById(reviewSubmit.getTag());
 
 			if (tagExists.isPresent()) {
 
