@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="\"resourcereview\"")
+@Table(name="\"resourcereview\"", schema="csresource")
 @NamedQuery(name="ResourceReview.findAll", query="SELECT r FROM ResourceReview r")
 public class ResourceReview implements Serializable {
 	private static final long serialVersionUID = 1L;

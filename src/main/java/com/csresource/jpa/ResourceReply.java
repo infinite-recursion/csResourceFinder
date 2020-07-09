@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="\"resourcereply\"")
+@Table(name="\"resourcereply\"", schema="csresource")
 @NamedQuery(name="ResourceReply.findAll", query="SELECT r FROM ResourceReply r")
 public class ResourceReply implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="\"resourcequestion\"")
+@Table(name="\"resourcequestion\"", schema="csresource")
 @NamedQuery(name="ResourceQuestion.findAll", query="SELECT r FROM ResourceQuestion r")
 public class ResourceQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="userlikes")
+@Table(name="userlikes", schema="csresource")
 @NamedQuery(name="Userlike.findAll", query="SELECT u FROM Userlike u")
 public class Userlike implements Serializable {
 	private static final long serialVersionUID = 1L;

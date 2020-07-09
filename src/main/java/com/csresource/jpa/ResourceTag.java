@@ -8,7 +8,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="\"resourcetag\"")
+@Table(name="\"resourcetag\"", schema="csresource")
 @NamedQuery(name="ResourceTag.findAll", query="SELECT r FROM ResourceTag r")
 public class ResourceTag implements Serializable {
 	private static final long serialVersionUID = 1L;
