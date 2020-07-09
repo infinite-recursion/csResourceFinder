@@ -22,7 +22,7 @@ public class ResourceReview implements Serializable {
 	@Column(name="\"comment\"")
 	private String comment;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="\"date\"")
 	private Date date;
 

@@ -163,10 +163,10 @@ public class SearchController {
 				allSearchResults.add(searchResults);
 			}
 		}
-		// TODO: Searching by tag and keyword
+		//Searching by tag and keyword
 		else if (searchJson.getKeyword() != null && searchJson.getTag() != null) {
 
-			// TODO: search by either highest rating or highest frequency
+			//search by either highest rating or highest frequency
 
 			// Searching by highest rating
 			if (searchJson.getSearchPriority().equals(AppConstants.SEARCH_HIGHEST_RATING)) {

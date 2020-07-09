@@ -25,7 +25,7 @@ public class Acitivity implements Serializable {
 	@Column(name="\"typeid\"")
 	private String typeID;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="\"date\"")
 	private Date date;
 
