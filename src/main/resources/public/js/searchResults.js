@@ -98,10 +98,8 @@ app.controller('SearchResultsController',
 
 					var searchResults = response.data;
 					
-					
-					localStorage.setItem("searchResults", JSON.stringify(searchResults));
-					
-					window.location.href = '/searchResults.html';
+					$scope.results.length = 0;
+					angular.extend($scope.results, searchResults);
 
 
 				}, function errorCallback(response) {
