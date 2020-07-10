@@ -134,12 +134,18 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 					data : reviewSubmission
 				}).then(function successCallback(response) {
 
-					var review = response.data;
+					
+					var review = response.data.review;
 					
 					if(review.comment!=null){
 						$scope.resourceData.reviews.unshift(review);
 					}
-					//disable the Add Review button
+					
+					//Update the resource's average rating and number of ratings
+					$scope.resourceData.numRatings = response.data.numRatings;
+					$scope.resourceData.rating = response.data.rating;
+					
+					//Update and display the rating that the user gave
 					$scope.resourceData.userRating = review.rating;
 
 				}, function errorCallback(response) {

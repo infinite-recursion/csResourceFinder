@@ -43,6 +43,7 @@ import com.resource.json.ResourceReplyJson;
 import com.resource.json.ResourceReviewJson;
 import com.resource.json.ResourceTagJson;
 import com.resource.json.ReviewSubmissionJson;
+import com.resource.json.ReviewSubmissionResultJson;
 
 @RequestMapping("/resourceDetails")
 @RestController
@@ -140,7 +141,7 @@ public class ResourceDetailsController {
 	}
 
 	@PostMapping("/submitReview")
-	public ResourceReviewJson submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
+	public ReviewSubmissionResultJson submitReview(@RequestBody ReviewSubmissionJson reviewSubmit) {
 
 		// Obtain the resource
 		Resource resource = resourceRepo.findById(reviewSubmit.getResource()).get();
@@ -224,9 +225,13 @@ public class ResourceDetailsController {
 		activity.setDate(resourceReview.getDate());
 		actRepo.save(activity);
 		
-		ResourceReviewJson resourceReviewJson = new ResourceReviewJson(resourceReview.getId(),resourceReview.getComment(),resourceReview.getDate(),resourceReview.getLikes(),resourceReview.getRating(),reviewSubmit.getUsername());
+		ResourceReviewJson resourceReviewJson = new ResourceReviewJson(resourceReview.getId(),
+				resourceReview.getComment(), resourceReview.getDate(), resourceReview.getLikes(),
+				resourceReview.getRating(), reviewSubmit.getUsername());
 		
-		return resourceReviewJson;
+		ReviewSubmissionResultJson submissionResult = new ReviewSubmissionResultJson(resourceReviewJson,
+				resource.getNumRatings(), resource.getRating());
+		return submissionResult;
 	}
 
 	@PostMapping("/submitQuestion")
