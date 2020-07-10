@@ -137,7 +137,7 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 					var review = response.data;
 					
 					if(review.comment!=null){
-						$scope.resourceData.reviews.push(review);
+						$scope.resourceData.reviews.unshift(review);
 					}
 					//disable the Add Review button
 					$scope.resourceData.userRating = review.rating;
@@ -185,7 +185,7 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 				}).then(function successCallback(response) {
 
 					var question = response.data;
-					$scope.resourceData.questions.push(question);
+					$scope.resourceData.questions.unshift(question);
 
 
 				}, function errorCallback(response) {
@@ -239,7 +239,7 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 				}).then(function successCallback(response) {
 
 					var replyData = response.data;
-					questionData.replies.push(replyData);
+					questionData.replies.unshift(replyData);
 
 
 				}, function errorCallback(response) {
