@@ -38,6 +38,8 @@ app.controller('SearchResultsController',
 			/**
 			 * Below is the logic for searching for results
 			 */
+			
+
 			$scope.searchPriorityOptions = [];
 			var highestRating = {};
 			highestRating.value = 'highest rating';
@@ -50,6 +52,21 @@ app.controller('SearchResultsController',
 			$scope.searchPriorityOptions.push(highestTag);
 			
 			$scope.selectedSearchPriority = highestRating.value;
+			
+			//Get the search params entered from the
+			//screen that initiated the search
+			var cachedSearchParams = localStorage.getItem("searchParams");
+			if(cachedSearchParams!=null){
+				cachedSearchParams = JSON.parse(cachedSearchParams);
+				$scope.searchKeyword = cachedSearchParams.keyword;
+				$scope.selectedTag = cachedSearchParams.tag;
+				
+				if(cachedSearchParams.searchPriority!=null){
+					$scope.selectedSearchPriority = cachedSearchParams.searchPriority;
+				}
+				
+			}
+			
 			// Get the tags for the search
 			$http({
 				method : 'GET',

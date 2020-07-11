@@ -492,7 +492,8 @@ app.controller('SearchController', function SearchController($scope, $http, $roo
 			var searchResults = response.data;
 			
 			localStorage.setItem("searchResults", JSON.stringify(searchResults));
-			
+			localStorage.setItem("searchParams",JSON.stringify(searchJson));
+
 			window.location.href = '/searchResults.html';
 
 
