@@ -17,12 +17,15 @@ public class ResourceQuestionJson {
 	private String username;
 	
 	private boolean requestInProgress;
+	
+	private boolean editRequestInProgress;
 
 	private List<ResourceReplyJson> replies;
 
 	public ResourceQuestionJson() {
 
 		requestInProgress = false;
+		editRequestInProgress = false;
 	}
 
 	public ResourceQuestionJson(String id, String comment, Date date, Integer likes, String username) {
@@ -33,6 +36,7 @@ public class ResourceQuestionJson {
 		this.likes = likes;
 		this.username = username;
 		requestInProgress = false;
+		editRequestInProgress = false;
 
 		this.replies = new ArrayList<ResourceReplyJson>();
 
@@ -93,7 +97,13 @@ public class ResourceQuestionJson {
 	public void setRequestInProgress(boolean requestInProgress) {
 		this.requestInProgress = requestInProgress;
 	}
-	
-	
+
+	public boolean isEditRequestInProgress() {
+		return editRequestInProgress;
+	}
+
+	public void setEditRequestInProgress(boolean editRequestInProgress) {
+		this.editRequestInProgress = editRequestInProgress;
+	}
 
 }

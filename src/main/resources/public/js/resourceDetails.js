@@ -11,6 +11,8 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 		window.location.href="/index.html";
 	}
 
+	$scope.username = user;
+	
 	var resourceRequest = {};
 	resourceRequest.resourceName = resource;
 	resourceRequest.username = user;
@@ -205,6 +207,51 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 		    
 	};
 	
+	$scope.openEditQuestionModal = function(questionData){
+		
+		var editQuestionModalInstance = $uibModal.open({
+		      animation: false,
+		      /*ariaLabelledBy: 'modal-title',
+		      ariaDescribedBy: 'modal-body',*/
+		      templateUrl: 'editQuestionModal.html',
+		      controller: 'editQuestionModalCtrl',
+		      resolve: {
+			        question: function () {
+			          return questionData;
+			        }
+			      }
+		    })
+		    
+		    editQuestionModalInstance.result.then(function (question) {
+		      
+		    	//Update the comment on the GUI
+		    	questionData.comment = question.comment;
+		    	
+		    	//Make it known that a request is in progress so that edit button will be disabled
+		    	questionData.editRequestInProgress = true;
+		    	
+		        //Submit the updated question to the backend		        
+		        
+				$http({
+					method : 'PUT',
+					url : '/resourceDetails/editQuestion',
+					data : questionData
+				}).then(function successCallback(response) {
+
+					//Re-enable the edit button
+					questionData.editRequestInProgress = false;
+
+
+				}, function errorCallback(response) {
+					console.log("Error updating question");
+				});
+		        
+		      }, function () {
+		    	  
+		    	  
+		      });
+		    
+	};
 	
 	$scope.openViewRepliesModal = function(questionData){
 		
@@ -261,6 +308,8 @@ app.controller('ResourceController', function ResourceController($scope,$rootSco
 
 });
 
+
+
 app.controller('AddReviewModalCtrl', function AddReviewModalCtrl($scope, $uibModalInstance,tags) {
 	
 	console.log("inside AddReviewModalCtrl");
@@ -309,7 +358,43 @@ app.controller('AddQuestionModalCtrl', function AddQuestionModalCtrl($scope, $ui
 
 });
 
-app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $rootScope,$uibModalInstance,$http, question,userLikes,user) {
+app.controller('editQuestionModalCtrl', function editQuestionModalCtrl($scope, $uibModalInstance, question) {
+	
+	console.log("inside editQuestionModalCtrl");
+	
+	$scope.question = angular.copy(question);
+
+	$scope.save = function () {
+		
+	    $uibModalInstance.close($scope.question);
+	  };
+	  
+	  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+	
+
+});
+
+app.controller('editReplyModalCtrl', function editReplyModalCtrl($scope, $uibModalInstance, reply) {
+	
+	console.log("inside editReplyModalCtrl");
+	
+	$scope.reply = angular.copy(reply);
+
+	$scope.save = function () {
+		
+	    $uibModalInstance.close($scope.reply);
+	  };
+	  
+	  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+	
+
+});
+
+app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $rootScope,$uibModalInstance,$uibModal, $http, question,userLikes,user) {
 	
 	console.log("inside ViewRepliesModalCtrl");
 	
@@ -411,6 +496,52 @@ app.controller('ViewRepliesModalCtrl', function ViewRepliesModalCtrl($scope, $ro
 			return 'btn btn-success';
 		}
 
+	};
+	
+	$scope.openEditReplyModal = function(replyData){
+		
+		var editReplyModalInstance = $uibModal.open({
+		      animation: false,
+		      /*ariaLabelledBy: 'modal-title',
+		      ariaDescribedBy: 'modal-body',*/
+		      templateUrl: 'editReplyModal.html',
+		      controller: 'editReplyModalCtrl',
+		      resolve: {
+			        reply: function () {
+			          return replyData;
+			        }
+			      }
+		    })
+		    
+		    editReplyModalInstance.result.then(function (reply) {
+		      
+		    	//Update the comment on the GUI
+		    	replyData.comment = reply.comment;
+		    	
+		    	//Make it known that a request is in progress so that edit button will be disabled
+		    	replyData.editRequestInProgress = true;
+		    	
+		        //Submit the updated question to the backend		        
+		        
+				$http({
+					method : 'PUT',
+					url : '/resourceDetails/editReply',
+					data : replyData
+				}).then(function successCallback(response) {
+
+					//Re-enable the edit button
+					replyData.editRequestInProgress = false;
+
+
+				}, function errorCallback(response) {
+					console.log("Error updating reply");
+				});
+		        
+		      }, function () {
+		    	  
+		    	  
+		      });
+		    
 	};
 
 	$scope.submitReply = function () {

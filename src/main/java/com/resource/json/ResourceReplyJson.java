@@ -20,6 +20,8 @@ public class ResourceReplyJson {
 	private boolean requestInProgress;
 	
 	private boolean acceptRequestInProgress;
+	
+	private boolean editRequestInProgress;
 
 
 	public ResourceReplyJson(String id, Boolean accepted, String comment, Date date, String username, Integer likes) {
@@ -31,6 +33,7 @@ public class ResourceReplyJson {
 		this.likes = likes;
 		requestInProgress = false;
 		acceptRequestInProgress = false;
+		editRequestInProgress = false;
 	}
 
 	public String getId() {
@@ -97,6 +100,12 @@ public class ResourceReplyJson {
 		this.acceptRequestInProgress = acceptRequestInProgress;
 	}
 
+	public boolean isEditRequestInProgress() {
+		return editRequestInProgress;
+	}
 
+	public void setEditRequestInProgress(boolean editRequestInProgress) {
+		this.editRequestInProgress = editRequestInProgress;
+	}
 
 }

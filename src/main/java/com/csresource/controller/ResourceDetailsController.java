@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,7 +73,7 @@ public class ResourceDetailsController {
 
 	@Autowired
 	ActivityRepository actRepo;
-	
+
 	@Autowired
 	UserLikesRepository userLikesRepo;
 
@@ -109,15 +110,15 @@ public class ResourceDetailsController {
 
 			// Get the reviews
 			for (ResourceReview review : resource.getResourceReviews()) {
-				
+
 				String reviewUser = review.getUser().getUsername();
-				
-				if(reviewUser.equals(resourceRequest.getUsername())) {
-					
+
+				if (reviewUser.equals(resourceRequest.getUsername())) {
+
 					resourceJson.setUserRating(review.getRating());
 				}
 
-				//Only show reviews that have comments
+				// Only show reviews that have comments
 				if (review.getComment() != null) {
 					ResourceReviewJson reviewJson = new ResourceReviewJson(review.getId(), review.getComment(),
 							review.getDate(), review.getLikes(), review.getRating(), reviewUser);
@@ -155,7 +156,7 @@ public class ResourceDetailsController {
 		resourceReview.setRating(reviewSubmit.getRating());
 		resourceReview.setResource(resource);
 		resourceReview.setUser(user);
-		resourceReview.setId(Util.convertCurrentDateIntoString()+"rev");
+		resourceReview.setId(Util.convertCurrentDateIntoString() + "rev");
 		resourceReviewRepo.save(resourceReview);
 
 		// Handle the tag if there is one
@@ -163,7 +164,7 @@ public class ResourceDetailsController {
 			Tag tag = null;
 
 			// convert tag to lowercase
-			//reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
+			// reviewSubmit.setTag(reviewSubmit.getTag().toLowerCase());
 
 			// See if tag already exists. If not, create a new tag
 			Optional<Tag> tagExists = tagRepo.findById(reviewSubmit.getTag());
@@ -224,11 +225,11 @@ public class ResourceDetailsController {
 		activity.setTypeID(resourceReview.getId());
 		activity.setDate(resourceReview.getDate());
 		actRepo.save(activity);
-		
+
 		ResourceReviewJson resourceReviewJson = new ResourceReviewJson(resourceReview.getId(),
 				resourceReview.getComment(), resourceReview.getDate(), resourceReview.getLikes(),
 				resourceReview.getRating(), reviewSubmit.getUsername());
-		
+
 		ReviewSubmissionResultJson submissionResult = new ReviewSubmissionResultJson(resourceReviewJson,
 				resource.getNumRatings(), resource.getRating());
 		return submissionResult;
@@ -241,7 +242,7 @@ public class ResourceDetailsController {
 		Resource resource = resourceRepo.findById(questionJson.getResource()).get();
 
 		ResourceQuestion resourceQuestion = new ResourceQuestion();
-		resourceQuestion.setId(Util.convertCurrentDateIntoString()+"ques");
+		resourceQuestion.setId(Util.convertCurrentDateIntoString() + "ques");
 		resourceQuestion.setComment(questionJson.getComment());
 		resourceQuestion.setDate(new Date());
 		resourceQuestion.setUser(user);
@@ -256,12 +257,25 @@ public class ResourceDetailsController {
 		activity.setTypeID(resourceQuestion.getId());
 		activity.setDate(resourceQuestion.getDate());
 		actRepo.save(activity);
-		
-		ResourceQuestionJson resourceQuestionJson = new ResourceQuestionJson(resourceQuestion.getId(),resourceQuestion.getComment(),resourceQuestion.getDate(),resourceQuestion.getLikes(),questionJson.getUsername());
-		
+
+		ResourceQuestionJson resourceQuestionJson = new ResourceQuestionJson(resourceQuestion.getId(),
+				resourceQuestion.getComment(), resourceQuestion.getDate(), resourceQuestion.getLikes(),
+				questionJson.getUsername());
+
 		return resourceQuestionJson;
 	}
-	
+
+	@PutMapping("/editQuestion")
+	public void editQuestion(@RequestBody ResourceQuestionJson questionJson) {
+
+		ResourceQuestion resourceQuestion = resourceQuestionRepo.findById(questionJson.getId()).get();
+
+		// Update the comment
+		resourceQuestion.setComment(questionJson.getComment());
+		resourceQuestion = resourceQuestionRepo.save(resourceQuestion);
+
+	}
+
 	@PostMapping("/submitReply")
 	public ResourceReplyJson submitReply(@RequestBody ReplySubmissionJson replySubmissionJson) {
 
@@ -269,10 +283,10 @@ public class ResourceDetailsController {
 		Resource resource = resourceRepo.findById(replySubmissionJson.getResource()).get();
 
 		ResourceQuestion resourceQuestion = resourceQuestionRepo.findById(replySubmissionJson.getQuestionId()).get();
-		
+
 		ResourceReply resourceReply = new ResourceReply();
-		
-		resourceReply.setId(Util.convertCurrentDateIntoString()+"reply");
+
+		resourceReply.setId(Util.convertCurrentDateIntoString() + "reply");
 		resourceReply.setAccepted(false);
 		resourceReply.setComment(replySubmissionJson.getComment());
 		resourceReply.setDate(new Date());
@@ -281,8 +295,8 @@ public class ResourceDetailsController {
 		resourceReply.setUser(user);
 		resourceReply.setResourceQuestion(resourceQuestion);
 		resourceReply = resourceReplyRepo.save(resourceReply);
-		
-		//Add the reply to the question.
+
+		// Add the reply to the question.
 		/*
 		 * resourceQuestion.addResourceReply(resourceReply);
 		 * resourceQuestionRepo.(resourceQuestion);
@@ -295,14 +309,25 @@ public class ResourceDetailsController {
 		activity.setTypeID(resourceReply.getId());
 		activity.setDate(resourceReply.getDate());
 		actRepo.save(activity);
-		
+
 		ResourceReplyJson replyJson = new ResourceReplyJson(resourceReply.getId(), resourceReply.getAccepted(),
 				resourceReply.getComment(), resourceReply.getDate(), replySubmissionJson.getUsername(),
 				resourceReply.getLikes());
-		
+
 		return replyJson;
 	}
-	
+
+	@PutMapping("/editReply")
+	public void editQuestion(@RequestBody ResourceReplyJson replyJson) {
+
+		ResourceReply resourceReply = resourceReplyRepo.findById(replyJson.getId()).get();
+
+		// Update the comment
+		resourceReply.setComment(replyJson.getComment());
+		resourceReply = resourceReplyRepo.save(resourceReply);
+
+	}
+
 	@PostMapping("/acceptReply")
 	public void acceptReply(@RequestBody AcceptReplyJson acceptJson) {
 
@@ -312,7 +337,7 @@ public class ResourceDetailsController {
 		resourceReply = resourceReplyRepo.save(resourceReply);
 
 	}
-	
+
 	@PostMapping("/likeContent")
 	public LikeContentResponseJson likeContent(@RequestBody LikeContentJson likeContentJson) {
 
@@ -400,7 +425,7 @@ public class ResourceDetailsController {
 
 			userLikesRepo.deleteById(likeContentJson.getUserLikeId());
 		}
-		
+
 		LikeContentResponseJson likeContentResponse = new LikeContentResponseJson(userLikeId);
 
 		return likeContentResponse;
