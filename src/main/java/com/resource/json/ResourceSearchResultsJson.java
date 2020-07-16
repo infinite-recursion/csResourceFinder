@@ -5,16 +5,23 @@ public class ResourceSearchResultsJson implements Comparable<ResourceSearchResul
 	private String resource;
 	private Float rating;
 	private Integer numberOfRatings;
+	private String description;
 	
 	//Only populated if tag is included in the search query
 	private String tag;
 	private int tagCount;
 
-	public ResourceSearchResultsJson(String resource, Float rating, Integer numberOfRatings) {
+	public ResourceSearchResultsJson(String resource, Float rating, Integer numberOfRatings, String description) {
 
 		this.resource = resource;
 		this.rating = rating;
 		this.numberOfRatings = numberOfRatings;
+		this.description = description;
+		
+		if(this.description.length() > 100) {
+			
+			this.description = this.description.substring(0, 100)+"...";
+		}
 	}
 
 	public String getResource() {
@@ -57,6 +64,14 @@ public class ResourceSearchResultsJson implements Comparable<ResourceSearchResul
 
 	public void setTagCount(int tagCount) {
 		this.tagCount = tagCount;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

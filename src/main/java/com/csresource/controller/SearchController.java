@@ -63,7 +63,7 @@ public class SearchController {
 						Resource resource = resourceTag.getResource();
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-								resource.getRating(), resource.getNumRatings());
+								resource.getRating(), resource.getNumRatings(), resource.getDescription());
 						resultsJson.setTag(tag.getName());
 						resultsJson.setTagCount(resourceTag.getCount());
 
@@ -97,7 +97,7 @@ public class SearchController {
 						Resource resource = resourceTag.getResource();
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-								resource.getRating(), resource.getNumRatings());
+								resource.getRating(), resource.getNumRatings(), resource.getDescription());
 
 						resultsJson.setTag(tag.getName());
 						resultsJson.setTagCount(resourceTag.getCount());
@@ -146,7 +146,7 @@ public class SearchController {
 			for (Resource resource : resources) {
 
 				ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-						resource.getRating(), resource.getNumRatings());
+						resource.getRating(), resource.getNumRatings(), resource.getDescription());
 				searchResults.add(resultsJson);
 
 				if (numResults % 4 == 0) {
@@ -189,7 +189,7 @@ public class SearchController {
 					if (resourceNameLowerCase.contains(keyword)) {
 
 						ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-								resource.getRating(), resource.getNumRatings());
+								resource.getRating(), resource.getNumRatings(), resource.getDescription());
 
 						resultsJson.setTag(tag.getName());
 						resultsJson.setTagCount(resourceTag.getCount());
@@ -249,7 +249,7 @@ public class SearchController {
 						if (resourceNameLowerCase.contains(keyword)) {
 
 							ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-									resource.getRating(), resource.getNumRatings());
+									resource.getRating(), resource.getNumRatings(), resource.getDescription());
 							resultsJson.setTag(tag.getName());
 							resultsJson.setTagCount(resourceTag.getCount());
 
@@ -282,7 +282,7 @@ public class SearchController {
 			for (Resource resource : resources) {
 
 				ResourceSearchResultsJson resultsJson = new ResourceSearchResultsJson(resource.getName(),
-						resource.getRating(), resource.getNumRatings());
+						resource.getRating(), resource.getNumRatings(), resource.getDescription());
 				searchResults.add(resultsJson);
 
 				if (numResults % 4 == 0) {
